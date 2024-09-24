@@ -9,11 +9,18 @@ import SessionModel from "../models/session.model";
 import UserModel from "../models/user.model";
 import VerificationCodeModel from "../models/verificationCode.model";
 import { ONE_DAY_MS, oneYearFromNow, thirtyDaysFromNow } from "../utils/date";
-import { JWT_REFRESH_TOKEN, JWT_SECRET } from "../constants/env";
+import { APP_ORIGIN, JWT_REFRESH_TOKEN, JWT_SECRET } from "../constants/env";
 import appAssert from "../utils/appAssert";
-import { CONFLICT, UNAUTHORIZED } from "../constants/http";
+import {
+  CONFLICT,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  UNAUTHORIZED,
+} from "../constants/http";
 import catchErrors from "../utils/catchErrors";
 import { signToken } from "../utils/jwt";
+import { sendMail } from "../utils/sendMail";
+import { getVerifyEmailTemplate } from "../utils/emailTemplates";
 
 export type CreateAccountParams = {
   email: string;
@@ -46,7 +53,16 @@ export const createAccount = async (data: CreateAccountParams) => {
     expiresAt: oneYearFromNow(),
   });
 
+  const url = `${APP_ORIGIN}/email/verify/${verificationCode}`;
   // send verification email
+  const { error } = await sendMail({
+    to: user.email,
+    ...getVerifyEmailTemplate(url),
+  });
+
+  if(error) {
+    console.log(error)
+  }
 
   // create session
   const session = await SessionModel.create({
@@ -149,5 +165,33 @@ export const refreshUserAccessToken = async (refreshToken: string) => {
   return {
     accessToken,
     newRefreshToken,
+  };
+};
+
+export const verifyEmail = async (code: string) => {
+  //get verification code
+  const validCode = await VerificationCodeModel.findOne({
+    _id: code,
+    type: VerificationCodeType.EmailVerification,
+    expiresAt: { $gt: new Date() },
+  });
+
+  appAssert(validCode, NOT_FOUND, "Invalid or expired verification code");
+  //get user by id
+  //update user to verified true
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    validCode.userId,
+    {
+      verified: true,
+    },
+    { new: true }
+  );
+  appAssert(updatedUser, INTERNAL_SERVER_ERROR, "Failed to verify email");
+  //delete verification code
+  await validCode.deleteOne();
+  //return user
+
+  return {
+    user: updatedUser.omitPassword(),
   };
 };
