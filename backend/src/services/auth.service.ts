@@ -53,16 +53,13 @@ export const createAccount = async (data: CreateAccountParams) => {
     expiresAt: oneYearFromNow(),
   });
 
-  const url = `${APP_ORIGIN}/email/verify/${verificationCode}`;
+  const url = `${APP_ORIGIN}/email/verify/${verificationCode._id}`;
   // send verification email
-  const { error } = await sendMail({
+  await sendMail({
     to: user.email,
     ...getVerifyEmailTemplate(url),
   });
 
-  if(error) {
-    console.log(error)
-  }
 
   // create session
   const session = await SessionModel.create({
