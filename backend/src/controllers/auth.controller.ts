@@ -4,6 +4,7 @@ import {
   createAccount,
   loginUser,
   refreshUserAccessToken,
+  sendPasswordresetEmail,
   verifyEmail,
 } from "../services/auth.service";
 import { CREATED } from "../constants/http";
@@ -14,6 +15,7 @@ import {
   setAuthCookies,
 } from "../utils/cookies";
 import {
+  emailSchema,
   loginSchema,
   registerSchema,
   verificationCodeSchema,
@@ -90,5 +92,16 @@ export const verifyEmailHandler = catchErrors(async (req, res) => {
 
   return res.status(200).json({
     message: "Email was successfully verified",
+  });
+});
+
+export const sendPasswordResetHandler = catchErrors(async (req, res) => {
+  const email = emailSchema.parse(req.body.email);
+
+  //call service
+  await sendPasswordresetEmail(email);
+
+  return res.status(OK).json({
+    message: "Password reset email sent",
   });
 });
