@@ -3,11 +3,11 @@ import { SessionDocument } from "../models/session.model";
 import { UserDocument } from "../models/user.model";
 import { JWT_REFRESH_TOKEN, JWT_SECRET } from "../constants/env";
 
-export type RefreshTokenPayLoad = {
+export type RefreshTokenPayload = {
   sessionId: SessionDocument["_id"];
 };
 
-export type AccessTokenPayLoad = {
+export type AccessTokenPayload = {
   userId: UserDocument["_id"];
   sessionId: SessionDocument["_id"];
 };
@@ -31,7 +31,7 @@ export const refreshTokenSignOptions: SignOptionsAndSecret = {
 };
 
 export const signToken = (
-  payload: AccessTokenPayLoad | RefreshTokenPayLoad,
+  payload: AccessTokenPayload | RefreshTokenPayload,
   options?: SignOptionsAndSecret
 ) => {
   const { secret, ...signOptions } = options || accessTokenSignOptions;
@@ -39,19 +39,19 @@ export const signToken = (
   return jwt.sign(payload, secret, { ...defaults, ...signOptions });
 };
 
-export const verifyToken =<TPayLoad extends object = AccessTokenPayLoad> (
+export const verifyToken =<TPayload extends object = AccessTokenPayload> (
   token: string,
   options?: VerifyOptions & { secret: string }
 ) => {
   const { secret = JWT_SECRET, ...verifyOptions } = options || {};
 
   try {
-    const payLoad = jwt.verify(token, secret, {
+    const payload = jwt.verify(token, secret, {
       ...defaults,
       ...verifyOptions,
-    }) as TPayLoad;
+    }) as TPayload;
 
-    return { payLoad };
+    return { payload };
   } catch (error: any) {
     return { error: error.message };
   }

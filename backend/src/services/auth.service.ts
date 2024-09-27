@@ -1,5 +1,5 @@
 import {
-  RefreshTokenPayLoad,
+  RefreshTokenPayload,
   refreshTokenSignOptions,
   verifyToken,
 } from "./../utils/jwt";
@@ -29,6 +29,7 @@ import {
   getPasswordResetTemplate,
   getVerifyEmailTemplate,
 } from "../utils/emailTemplates";
+import { hashValue } from "../utils/bcrypt";
 
 export type CreateAccountParams = {
   email: string;
@@ -61,7 +62,7 @@ export const createAccount = async (data: CreateAccountParams) => {
     expiresAt: oneYearFromNow(),
   });
 
-  const url = `${APP_ORIGIN}/auth/email/verify/${verificationCode._id}`;
+  const url = `${APP_ORIGIN}/email/verify/${verificationCode._id}`;
   // send verification email
   await sendMail({
     to: user.email,
@@ -137,12 +138,12 @@ export const loginUser = async ({
 };
 
 export const refreshUserAccessToken = async (refreshToken: string) => {
-  const { payLoad } = verifyToken<RefreshTokenPayLoad>(refreshToken, {
+  const { payload } = verifyToken<RefreshTokenPayload>(refreshToken, {
     secret: refreshTokenSignOptions.secret,
   });
-  appAssert(payLoad, UNAUTHORIZED, "Invalid refresh token");
+  appAssert(payload, UNAUTHORIZED, "Invalid refresh token");
 
-  const session = await SessionModel.findById(payLoad.sessionId);
+  const session = await SessionModel.findById(payload.sessionId);
   const now = Date.now();
   appAssert(
     session && session.expiresAt.getTime() > now,
@@ -242,5 +243,41 @@ export const sendPasswordresetEmail = async (email: string) => {
   return {
     url,
     emailId: data,
+  };
+};
+
+type ResetPasswordParams = {
+  password: string;
+  verificationCode: string;
+};
+
+export const resetPassword = async ({
+  password,
+  verificationCode,
+}: ResetPasswordParams) => {
+  //get verification code
+  const validCode = await VerificationCodeModel.findOne({
+    _id: verificationCode,
+    type: VerificationCodeType.PasswordReset,
+    expiresAt: { $gt: new Date() },
+  });
+  appAssert(validCode, NOT_FOUND, "Invalid or expired verification code");
+
+  //update user password
+  const updatedUser = await UserModel.findOneAndUpdate(validCode.userId, {
+    password: await hashValue(password),
+  });
+  appAssert(updatedUser, INTERNAL_SERVER_ERROR, "Failed to reset password");
+
+  //delete verification code
+  await validCode.deleteOne();
+
+  //delete all sessions
+  await SessionModel.deleteMany({
+    userId: updatedUser._id,
+  });
+
+  return {
+    user: updatedUser.omitPassword(),
   };
 };
