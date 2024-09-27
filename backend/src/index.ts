@@ -8,6 +8,7 @@ import errorHandler from "./middleware/errorHandler";
 import authRoutes from "./routes/auth.routes";
 import authenticate from "./middleware/authenticate";
 import userRoutes from "./routes/user.routes";
+import sessionRoutes from "./routes/session.route";
 
 const app = express();
 
