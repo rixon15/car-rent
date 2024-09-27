@@ -6,6 +6,8 @@ import { APP_ORIGIN, NODE_ENV, PORT } from "./constants/env";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler";
 import authRoutes from "./routes/auth.routes";
+import authenticate from "./middleware/authenticate";
+import userRoutes from "./routes/user.routes";
 
 const app = express();
 
@@ -23,7 +25,12 @@ app.get("/health", (req, res, next) => {
   return res.status(200).json({ status: "healthy" });
 });
 
+//auth routes
 app.use("/auth", authRoutes);
+
+//protected routes
+app.use('/user',authenticate, userRoutes)
+app.use('/sessions',authenticate, sessionRoutes)
 
 app.use(errorHandler);
 
