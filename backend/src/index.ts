@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes";
 import authenticate from "./middleware/authenticate";
 import userRoutes from "./routes/user.routes";
 import sessionRoutes from "./routes/session.route";
+import carRoutes from "./routes/car.routes";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.get("/health", (req, res, next) => {
 
 //auth routes
 app.use("/auth", authRoutes);
+app.use('/car', carRoutes);
 
 //protected routes
 app.use('/user',authenticate, userRoutes)
