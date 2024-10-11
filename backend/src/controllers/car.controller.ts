@@ -1,4 +1,3 @@
-import assert = require("node:assert");
 import z from "zod";
 import catchErrors from "../utils/catchErrors";
 import { createCar } from "../services/car.service";
@@ -67,9 +66,7 @@ export const getPopularCarsHandler = catchErrors(async (req, res) => {
   return res.status(OK).json(mostPopularCars);
 });
 
-export const getListOfCars = catchErrors(async (req, res) => {
-  console.log(req.query);
-
+export const getListOfCarsHandler = catchErrors(async (req, res) => {
   const pageNumber: number = parseInt(req.query.page as string);
   const carsPerPage: number = parseInt(req.query.number as string);
   //get the list of cars by page
@@ -81,4 +78,16 @@ export const getListOfCars = catchErrors(async (req, res) => {
   //return the car list
 
   res.status(OK).json(carList);
+});
+
+export const deleteCarHandler = catchErrors(async (req, res) => {
+  const id = z.string().parse(req.params.id);
+  //delete the car based on id
+  const deletedCar = await CarModel.findByIdAndDelete(id);
+  appAssert(deletedCar, NOT_FOUND, "Car not found in the database");
+  //return a message
+
+  res.status(OK).json({
+    message: "Car deleted successfully",
+  });
 });
