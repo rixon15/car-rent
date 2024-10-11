@@ -1,3 +1,4 @@
+import assert = require("node:assert");
 import z from "zod";
 import catchErrors from "../utils/catchErrors";
 import { createCar } from "../services/car.service";
@@ -64,4 +65,20 @@ export const getPopularCarsHandler = catchErrors(async (req, res) => {
 
   //return the popular car object
   return res.status(OK).json(mostPopularCars);
+});
+
+export const getListOfCars = catchErrors(async (req, res) => {
+  console.log(req.query);
+
+  const pageNumber: number = parseInt(req.query.page as string);
+  const carsPerPage: number = parseInt(req.query.number as string);
+  //get the list of cars by page
+  const carList = await CarModel.find()
+    .skip((pageNumber - 1) * carsPerPage)
+    .limit(carsPerPage);
+  appAssert(carList, INTERNAL_SERVER_ERROR, "Internal server error");
+
+  //return the car list
+
+  res.status(OK).json(carList);
 });
