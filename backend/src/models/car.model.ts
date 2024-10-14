@@ -16,7 +16,7 @@ const carSchema = new mongoose.Schema<CarDocument>(
   {
     name: { type: String, required: true },
     description: { type: String, required: true },
-    image: { type: String, required: true },
+    image: { type: String, required: true, default: "/" },
     type: { type: String, required: true },
     capacity: { type: Number, required: true },
     transmission: { type: String, required: true },

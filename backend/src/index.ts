@@ -13,15 +13,20 @@ import carRoutes from "./routes/car.routes";
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: APP_ORIGIN,
-    credentials: true,
-  })
-);
+app.use(express.json({ limit: "25mb" }));
+app.use(express.urlencoded({ extended: true, limit: "25mb" }));
+// app.use(
+//   cors({
+//     origin: APP_ORIGIN,
+//     credentials: true,
+//   })
+// );
+app.use(cors());
 app.use(cookieParser());
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 app.get("/health", (req, res, next) => {
   return res.status(200).json({ status: "healthy" });
@@ -29,11 +34,11 @@ app.get("/health", (req, res, next) => {
 
 //auth routes
 app.use("/auth", authRoutes);
-app.use('/car', carRoutes);
+app.use("/car", carRoutes);
 
 //protected routes
-app.use('/user',authenticate, userRoutes)
-app.use('/sessions',authenticate, sessionRoutes)
+app.use("/user", authenticate, userRoutes);
+app.use("/sessions", authenticate, sessionRoutes);
 
 app.use(errorHandler);
 

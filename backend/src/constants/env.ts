@@ -16,3 +16,6 @@ export const JWT_SECRET = getEnv("JWT_SECRET");
 export const JWT_REFRESH_TOKEN = getEnv("JWT_REFRESH_SECRET");
 export const GMAIL_USER = getEnv("GMAIL_USER");
 export const GMAIL_APP_PASSWORD = getEnv("GMAIL_APP_PASSWORD");
+export const CLOUD_NAME = getEnv("CLOUD_NAME");
+export const API_KEY = getEnv("API_KEY");
+export const API_SECRET = getEnv("API_SECRET");

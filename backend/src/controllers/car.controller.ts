@@ -9,6 +9,7 @@ import {
 } from "../constants/http";
 import CarModel from "../models/car.model";
 import appAssert from "../utils/appAssert";
+import { uploadImage } from "../services/image.service";
 
 enum CAR_TYPES {
   Sport = "Sport",
@@ -38,6 +39,10 @@ const carSchema = z.object({
 export const createCarHandler = catchErrors(async (req, res) => {
   //validate request
   const request = carSchema.parse({ ...req.body });
+  //call the upload image service
+  const imgUrl = await uploadImage(request.image);
+  //set the image path
+  request.image = imgUrl as string;
   //call service
   const car = await createCar(request);
   //return response

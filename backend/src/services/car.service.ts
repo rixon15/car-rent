@@ -5,9 +5,9 @@ import appAssert from "../utils/appAssert";
 type CreateCarParams = {
   name: string;
   description: string;
-  image: string;
   type: string;
   capacity: number;
+  image: string;
   transmission: string;
   fuelCapacity: number;
   price: number;
