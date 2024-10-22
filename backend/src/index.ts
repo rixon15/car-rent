@@ -10,6 +10,7 @@ import authenticate from "./middleware/authenticate";
 import userRoutes from "./routes/user.routes";
 import sessionRoutes from "./routes/session.route";
 import carRoutes from "./routes/car.routes";
+import paymentRoutes from "./routes/payment.routes";
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use("/car", carRoutes);
 //protected routes
 app.use("/user", authenticate, userRoutes);
 app.use("/sessions", authenticate, sessionRoutes);
+app.use('/payment', authRoutes, paymentRoutes)
 
 app.use(errorHandler);
 

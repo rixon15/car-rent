@@ -19,3 +19,4 @@ export const GMAIL_APP_PASSWORD = getEnv("GMAIL_APP_PASSWORD");
 export const CLOUD_NAME = getEnv("CLOUD_NAME");
 export const API_KEY = getEnv("API_KEY");
 export const API_SECRET = getEnv("API_SECRET");
+export const STRIPE_SECREET = getEnv("STRIPE_SECRET");

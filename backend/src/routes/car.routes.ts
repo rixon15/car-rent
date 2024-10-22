@@ -10,7 +10,7 @@ import {
 const carRoutes = Router();
 
 //implement role check for create and delete car routes
-
+//prefix /car
 carRoutes.post("/create", createCarHandler);
 carRoutes.get("/popular", getPopularCarsHandler);
 carRoutes.get("/list", getListOfCarsHandler);
