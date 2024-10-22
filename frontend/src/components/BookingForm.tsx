@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import TimePicker from "react-time-picker";
-import "react-time-picker/dist/TimePicker.css";
-import { formatCardExpirationDate } from "../utils/Date.utils";
-import { SECURITY, VISA } from "../constants/svgPath";
+import DatePicker from "react-datepicker";
+import { SECURITY,  } from "../constants/svgPath";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-time-picker/dist/TimePicker.css";
 
 interface IclientInfo {
   name: string;
@@ -24,7 +23,6 @@ interface IclientInfo {
   termsAndCondition: boolean;
   paymentMethod: string;
 }
-
 interface IcarInfo {
   _id: string;
   name: string;
@@ -41,38 +39,21 @@ interface IcarInfo {
   __v: number;
 }
 
-const CarBookingPage = () => {
-  const [clientInfo, setClientInfo] = useState<IclientInfo>({
-    name: "",
-    phoneNumber: 0,
-    address: "",
-    pickupDate: new Date(),
-    pickupTime: "10:00",
-    dropoffDate: new Date(),
-    dropoffTime: "10:00",
-    cardNumber: 0,
-    expirationDate: new Date(),
-    cardHolder: "",
-    CVC: 0,
-    marketing: false,
-    termsAndCondition: false,
-    paymentMethod: "creditCard",
-  });
 
-  const [expirationDate, setexpirationDate] = useState("");
+const BookingForm = () => {
+  // const [errorMessage, setErrorMessage] = useState("");
+  const [windowWidth, setWindowWidth] = useState(0);
   const [carInfo, setCarInfo] = useState<IcarInfo>();
   const [loading, setLoading] = useState(true);
-  const [tax, setTax] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(0);
 
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    console.log(id);
+    setLoading(true);
 
     const fetchCarInfo = async () => {
-      setLoading(true);
-
       await axios
         .get(`http://localhost:4004/car/${id}`)
         .then((response) => setCarInfo(response.data))
@@ -90,14 +71,67 @@ const CarBookingPage = () => {
     setWindowWidth(window.innerWidth);
   }, [windowWidth]);
 
+  const [clientInfo, setClientInfo] = useState<IclientInfo>({
+    name: "",
+    phoneNumber: 0,
+    address: "",
+    pickupDate: new Date(),
+    pickupTime: "10:00",
+    dropoffDate: new Date(),
+    dropoffTime: "10:00",
+    cardNumber: 0,
+    expirationDate: new Date(),
+    cardHolder: "",
+    CVC: 0,
+    marketing: false,
+    termsAndCondition: false,
+    paymentMethod: "creditCard",
+  });
+
+  // const stripe = useStripe();
+  // const elements = useElements();
+
+  // const handleSubmit: React.FormEventHandler<HTMLButtonElement> = async (
+  //   event: React.FormEvent<HTMLButtonElement>
+  // ) => {
+  //   // We don't want to let default form submission happen here,
+  //   // which would refresh the page.
+  //   event.preventDefault();
+
+  //   if (!stripe || !elements) {
+  //     // Stripe.js hasn't yet loaded.
+  //     // Make sure to disable form submission until Stripe.js has loaded.
+  //     return;
+  //   }
+
+  //   const { error } = await stripe.confirmPayment({
+  //     //`Elements` instance that was used to create the Payment Element
+  //     elements,
+  //     confirmParams: {
+  //       // return_url: `http://localhost:4004/car/${id}`,
+  //       return_url: `https://example.com/order/123/complete`,
+  //     },
+  //   });
+
+  //   if (error) {
+  //     // This point will only be reached if there is an immediate error when
+  //     // confirming the payment. Show error to your customer (for example, payment
+  //     // details incomplete)
+  //     setErrorMessage(error.message as string);
+  //     console.error(errorMessage);
+  //   } else {
+  //     // Your customer will be redirected to your `return_url`. For some payment
+  //     // methods like iDEAL, your customer will be redirected to an intermediate
+  //     // site first to authorize the payment, then redirected to the `return_url`.
+  //   }
+  // };
+
   if (!loading) {
     return (
       <div className="container mx-auto">
         {/* Billing info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 grid-rows-5 sm:grid-rows-4 gap-4 ">
-          <div
-            className="bg-[#FFFFFF] rounded-lg p-8 sm:grid-row-2"
-          >
+        <div className="grid grid-cols-1 sm:grid-cols-2 grid-rows-4 sm:grid-rows-3 gap-4 ">
+          <div className="bg-[#FFFFFF] rounded-lg p-8 sm:grid-row-2">
             <div className="flex flex-row items-center justify-between">
               <div className="flex flex-col">
                 <h1 className="font-bold text-xl">Billing Info</h1>
@@ -127,7 +161,10 @@ const CarBookingPage = () => {
                 />
               </div>
               <div className="flex flex-col sm:ml-4 gap-y-4">
-                <label htmlFor="phoneNumber" className="font-bold">
+                <label
+                  htmlFor="phoneNumber"
+                  className="font-bold whitespace-nowrap"
+                >
                   Phone Number
                 </label>
                 <input
@@ -259,7 +296,7 @@ const CarBookingPage = () => {
           </div>
           {/* Payment Method */}
 
-          <div className="col-start-1 row-start-4 sm:row-start-3">
+          {/* <div className="col-start-1 row-start-4 sm:row-start-3">
             <div className="flex flex-col h-full">
               <div className="bg-[#FFFFFF] rounded-lg p-8 h-full">
                 <div className="flex flex-row items-center justify-between">
@@ -286,7 +323,10 @@ const CarBookingPage = () => {
                   </div>
                   <form className="grid gric-cols-1 sm:grid-cols-2 gap-y-5 sm:gap-y-0">
                     <div className="flex flex-col sm:mr-4 gap-y-4">
-                      <label htmlFor="cardNumber" className="font-bold">
+                      <label
+                        htmlFor="cardNumber"
+                        className="font-bold whitespace-nowrap overflow-x-clip"
+                      >
                         Card Number
                       </label>
                       <input
@@ -305,7 +345,10 @@ const CarBookingPage = () => {
                       />
                     </div>
                     <div className="flex flex-col sm:ml-4 gap-y-4">
-                      <label htmlFor="expirationDate" className="font-bold">
+                      <label
+                        htmlFor="expirationDate"
+                        className="font-bold whitespace-nowrap overflow-x-clip"
+                      >
                         Expiration Date
                       </label>
                       <input
@@ -327,8 +370,11 @@ const CarBookingPage = () => {
                         }}
                       />
                     </div>
-                    <div className="flex flex-col sm:mt-6 gap-y-4">
-                      <label htmlFor="cardHolder" className="font-bold">
+                    <div className="flex flex-col sm:mt-6 gap-y-4 sm:mr-4">
+                      <label
+                        htmlFor="cardHolder"
+                        className="font-bold whitespace-nowrap overflow-x-clip"
+                      >
                         Card Holder
                       </label>
                       <input
@@ -336,7 +382,7 @@ const CarBookingPage = () => {
                         name="cardHolder"
                         id="cardHolder"
                         placeholder="Card Holder"
-                        className="bg-[#FFFFFF] rounded-lg h-14 pl-8 mr-4 border-0 w-full"
+                        className="bg-[#FFFFFF] rounded-lg h-14 pl-8 border-0 w-full"
                         onChange={(e) =>
                           setClientInfo((prevState) => ({
                             ...prevState,
@@ -345,7 +391,7 @@ const CarBookingPage = () => {
                         }
                       />
                     </div>
-                    <div className="flex flex-col sm:mt-6 gap-y-4">
+                    <div className="flex flex-col sm:mt-6 gap-y-4 sm:ml-4">
                       <label htmlFor="CCV" className="font-bold">
                         CCV
                       </label>
@@ -367,10 +413,11 @@ const CarBookingPage = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
+
           {/* Confirmation */}
-          <div className="col-start-1 row-start-5 sm:row-start-4">
-            <div className="bg-[#FFFFFF] rounded-lg p-8">
+          <div className="col-start-1 row-start-4 sm:row-start-3 h-full">
+            <div className="bg-[#FFFFFF] rounded-lg p-8 h-full">
               <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-col">
                   <h1 className="font-bold text-xl">Confirmation</h1>
@@ -422,7 +469,12 @@ const CarBookingPage = () => {
                     I agree with the terms and conditions and privacy policy
                   </label>
                 </div>
-                <button className="w-[140px] h-14 rounded-lg bg-[#3563E9] text-[#FFFFFF]">
+                <button
+                  className="w-[140px] h-14 rounded-lg bg-[#3563E9] text-[#FFFFFF]"
+                  onClick={() => {
+                    navigate(`../payment/${id}`);
+                  }}
+                >
                   Rent Now
                 </button>
               </form>
@@ -454,7 +506,13 @@ const CarBookingPage = () => {
                     className="max-w-32 max-h-28"
                   />
                   <div className="flex flex-col">
-                    <p className={`${windowWidth <= 640 ? 'text-xl': ''} md:text-xl lg:text-4xl font-bold`}>{carInfo?.name}</p>
+                    <p
+                      className={`${
+                        windowWidth <= 640 ? "text-xl" : ""
+                      } md:text-xl lg:text-4xl font-bold`}
+                    >
+                      {carInfo?.name}
+                    </p>
                   </div>
                 </div>
                 <span className="border-y-[1px]"></span>
@@ -463,12 +521,12 @@ const CarBookingPage = () => {
                     <p>Subtotal</p>
                     <p className="font-bold">{`$${carInfo?.price}`}</p>
                   </div>
-                  <div className="flex flex-row justify-between">
+                  {/* <div className="flex flex-row justify-between">
                     <p>Tax</p>
                     <p className="font-bold">
                       ${(carInfo?.price as number) * tax}
                     </p>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex flex-row items-center rounded-lg gap-x-8 gap-y-4 relative h-14">
                   <input
@@ -489,8 +547,7 @@ const CarBookingPage = () => {
                   </div>
                   <p className="text-3xl font-bold">
                     $
-                    {(carInfo?.price as number) +
-                      (carInfo?.price as number) * tax}
+                    {(carInfo?.price as number)}
                   </p>
                 </div>
               </div>
@@ -502,4 +559,4 @@ const CarBookingPage = () => {
   }
 };
 
-export default CarBookingPage;
+export default BookingForm;
