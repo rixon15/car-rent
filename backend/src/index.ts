@@ -11,6 +11,7 @@ import userRoutes from "./routes/user.routes";
 import sessionRoutes from "./routes/session.route";
 import carRoutes from "./routes/car.routes";
 import paymentRoutes from "./routes/payment.routes";
+import bookingRoutes from "./routes/booking.routes";
 
 const app = express();
 
@@ -40,7 +41,8 @@ app.use("/car", carRoutes);
 //protected routes
 app.use("/user", authenticate, userRoutes);
 app.use("/sessions", authenticate, sessionRoutes);
-app.use('/payment', authRoutes, paymentRoutes)
+app.use("/payment", authenticate, paymentRoutes);
+app.use("/:id/booking", bookingRoutes);
 
 app.use(errorHandler);
 

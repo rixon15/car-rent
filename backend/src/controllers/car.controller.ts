@@ -45,6 +45,8 @@ export const createCarHandler = catchErrors(async (req, res) => {
   request.image = imgUrl as string;
   //call service
   const car = await createCar(request);
+  //error handling
+  appAssert(car, INTERNAL_SERVER_ERROR, "Intenal Server Error");
   //return response
 
   return res.status(CREATED).json(car);
@@ -97,9 +99,17 @@ export const deleteCarHandler = catchErrors(async (req, res) => {
   });
 });
 
-export const bookCarHandler = catchErrors(async (req, res) => {
-  const {NAME, PHONENUMBER, ADDRESS, PICKUP_DATE, PICKUP_TIME, DROPOFF_DATE, DROPOFF_TIME, MARKETING} = req.query
+// export const bookCarHandler = catchErrors(async (req, res) => {
+//   const {
+//     NAME,
+//     PHONENUMBER,
+//     ADDRESS,
+//     PICKUP_DATE,
+//     PICKUP_TIME,
+//     DROPOFF_DATE,
+//     DROPOFF_TIME,
+//     MARKETING,
+//   } = req.query;
 
-
-  return res.json({message: 'test'})
-})
+//   return res.json({ message: "test" });
+// });

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  bookCarHandler,
+  // bookCarHandler,
   createCarHandler,
   deleteCarHandler,
   getCarHandler,
@@ -15,7 +15,7 @@ const carRoutes = Router();
 carRoutes.post("/create", createCarHandler);
 carRoutes.get("/popular", getPopularCarsHandler);
 carRoutes.get("/list", getListOfCarsHandler);
-carRoutes.post("/:id/booking", bookCarHandler);
+// carRoutes.post("/:id/booking", bookCarHandler);
 carRoutes.get("/:id", getCarHandler);
 carRoutes.delete("/:id", deleteCarHandler);
 
