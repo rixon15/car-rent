@@ -42,7 +42,7 @@ app.use("/car", carRoutes);
 app.use("/user", authenticate, userRoutes);
 app.use("/sessions", authenticate, sessionRoutes);
 app.use("/payment", authenticate, paymentRoutes);
-app.use("/:id/booking", bookingRoutes);
+app.use("/booking", bookingRoutes);
 
 app.use(errorHandler);
 

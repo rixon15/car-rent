@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { createBookingHandler } from "../controllers/booking.controller";
+import { createBookingHandler, deleteBookingHandler } from "../controllers/booking.controller";
 
 const bookingRoutes = Router();
 //prefix /:id/booking
-bookingRoutes.post("", createBookingHandler);
+bookingRoutes.post("/:id", createBookingHandler);
+bookingRoutes.delete("/:id", deleteBookingHandler);
 
 export default bookingRoutes;
