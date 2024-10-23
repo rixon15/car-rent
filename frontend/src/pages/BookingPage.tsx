@@ -1,27 +1,23 @@
 import { useEffect, useState } from "react";
 import TimePicker from "react-time-picker";
 import DatePicker from "react-datepicker";
-import { SECURITY,  } from "../constants/svgPath";
+import { SECURITY } from "../constants/svgPath";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
+import toast, { Toaster } from "react-hot-toast";
 
 interface IclientInfo {
   name: string;
-  phoneNumber: number;
+  phoneNumber: string;
   address: string;
   pickupDate: Date;
   pickupTime: string;
   dropoffDate: Date;
   dropoffTime: string;
-  cardNumber: number;
-  expirationDate: Date;
-  cardHolder: string;
-  CVC: number;
   marketing: boolean;
   termsAndCondition: boolean;
-  paymentMethod: string;
 }
 interface IcarInfo {
   _id: string;
@@ -39,6 +35,34 @@ interface IcarInfo {
   __v: number;
 }
 
+const handleSubmit = (e,id,clientInfo: IclientInfo) => {
+  e.preventDefault();
+  axios.post(
+    `http://localhost:4004/car/${id}/booking/?NAME=${clientInfo.name}&&PHONE_NUMBER=${clientInfo.phoneNumber}&&ADDRESS=${clientInfo.address}&&PICKUP_DATE=${clientInfo.pickupDate}&&PICKUP_TIME=${clientInfo.pickupTime}&&DROPOFF_DATE=${clientInfo.dropoffDate}&&DROPOFF_TIME=${clientInfo.dropoffTime}&&MARKETING=${clientInfo.marketing}`
+  );
+};
+
+const checkCompletion = (clientInfo: IclientInfo) => {
+  let result: boolean = false;
+
+  const date = new Date();
+
+
+  if (
+    clientInfo.name.length > 0 &&
+    clientInfo.phoneNumber.length === 10 &&
+    clientInfo.address.length > 0 &&
+    clientInfo.pickupDate > new Date() &&
+    clientInfo.dropoffDate > new Date() &&
+    clientInfo.termsAndCondition
+  ) {
+    result = true;
+  } else {
+    result = false;
+  }
+
+  return result;
+};
 
 const BookingForm = () => {
   // const [errorMessage, setErrorMessage] = useState("");
@@ -73,62 +97,20 @@ const BookingForm = () => {
 
   const [clientInfo, setClientInfo] = useState<IclientInfo>({
     name: "",
-    phoneNumber: 0,
+    phoneNumber: '',
     address: "",
     pickupDate: new Date(),
     pickupTime: "10:00",
     dropoffDate: new Date(),
     dropoffTime: "10:00",
-    cardNumber: 0,
-    expirationDate: new Date(),
-    cardHolder: "",
-    CVC: 0,
     marketing: false,
     termsAndCondition: false,
-    paymentMethod: "creditCard",
   });
-
-  // const stripe = useStripe();
-  // const elements = useElements();
-
-  // const handleSubmit: React.FormEventHandler<HTMLButtonElement> = async (
-  //   event: React.FormEvent<HTMLButtonElement>
-  // ) => {
-  //   // We don't want to let default form submission happen here,
-  //   // which would refresh the page.
-  //   event.preventDefault();
-
-  //   if (!stripe || !elements) {
-  //     // Stripe.js hasn't yet loaded.
-  //     // Make sure to disable form submission until Stripe.js has loaded.
-  //     return;
-  //   }
-
-  //   const { error } = await stripe.confirmPayment({
-  //     //`Elements` instance that was used to create the Payment Element
-  //     elements,
-  //     confirmParams: {
-  //       // return_url: `http://localhost:4004/car/${id}`,
-  //       return_url: `https://example.com/order/123/complete`,
-  //     },
-  //   });
-
-  //   if (error) {
-  //     // This point will only be reached if there is an immediate error when
-  //     // confirming the payment. Show error to your customer (for example, payment
-  //     // details incomplete)
-  //     setErrorMessage(error.message as string);
-  //     console.error(errorMessage);
-  //   } else {
-  //     // Your customer will be redirected to your `return_url`. For some payment
-  //     // methods like iDEAL, your customer will be redirected to an intermediate
-  //     // site first to authorize the payment, then redirected to the `return_url`.
-  //   }
-  // };
 
   if (!loading) {
     return (
       <div className="container mx-auto">
+        <Toaster position="top-center" reverseOrder={false} />
         {/* Billing info */}
         <div className="grid grid-cols-1 sm:grid-cols-2 grid-rows-4 sm:grid-rows-3 gap-4 ">
           <div className="bg-[#FFFFFF] rounded-lg p-8 sm:grid-row-2">
@@ -150,8 +132,9 @@ const BookingForm = () => {
                   type="text"
                   name="name"
                   id="name"
+                  required
                   placeholder="Your name"
-                  className="bg-[#F6F7F9] rounded-lg w-full h-14 placeholder:pl-8"
+                  className="bg-[#F6F7F9] rounded-lg w-full h-14 text-center"
                   onChange={(e) =>
                     setClientInfo((prevState) => ({
                       ...prevState,
@@ -168,16 +151,17 @@ const BookingForm = () => {
                   Phone Number
                 </label>
                 <input
-                  type="number"
+                  type="tel"
                   name="phoneNumber"
                   id="phoneNumber"
+                  required
                   placeholder="Phone Number"
                   maxLength={10}
-                  className="bg-[#F6F7F9] rounded-lg w-full h-14 pl-8"
+                  className="bg-[#F6F7F9] rounded-lg w-full h-14 text-center"
                   onChange={(e) =>
                     setClientInfo((prevState) => ({
                       ...prevState,
-                      phoneNumber: parseInt(e.target.value),
+                      phoneNumber: e.target.value,
                     }))
                   }
                 />
@@ -190,8 +174,9 @@ const BookingForm = () => {
                   type="text"
                   name="address"
                   id="address"
+                  required
                   placeholder="Address"
-                  className="bg-[#F6F7F9] rounded-lg h-14 pl-8 w-full mr-4 border-0"
+                  className="bg-[#F6F7F9] rounded-lg h-14 text-center w-full mr-4 border-0"
                   onChange={(e) =>
                     setClientInfo((prevState) => ({
                       ...prevState,
@@ -294,127 +279,6 @@ const BookingForm = () => {
               </div>
             </form>
           </div>
-          {/* Payment Method */}
-
-          {/* <div className="col-start-1 row-start-4 sm:row-start-3">
-            <div className="flex flex-col h-full">
-              <div className="bg-[#FFFFFF] rounded-lg p-8 h-full">
-                <div className="flex flex-row items-center justify-between">
-                  <div className="flex flex-col">
-                    <h1 className="font-bold text-xl">Payment Method</h1>
-                    <p className="text-sm">Please enter your payment details</p>
-                  </div>
-                  <div>
-                    <p className="text-sm">Step 3 of 4</p>
-                  </div>
-                </div>
-                <div className="bg-[#F6F7F9] p-6 rounded-lg mt-6">
-                  <div className="flex flex-row mb-8 justify-between">
-                    <div className="flex flex-row gap-x-2">
-                      <input
-                        type="radio"
-                        name="creditCard"
-                        id="creditCard"
-                        defaultChecked
-                      />
-                      <label htmlFor="creditCard">Credit Card</label>
-                    </div>
-                    <img src={VISA} alt="Visa logo" />
-                  </div>
-                  <form className="grid gric-cols-1 sm:grid-cols-2 gap-y-5 sm:gap-y-0">
-                    <div className="flex flex-col sm:mr-4 gap-y-4">
-                      <label
-                        htmlFor="cardNumber"
-                        className="font-bold whitespace-nowrap overflow-x-clip"
-                      >
-                        Card Number
-                      </label>
-                      <input
-                        type="string"
-                        name="cardNumber"
-                        id="cardNumber"
-                        maxLength={16}
-                        placeholder="Card number"
-                        className="bg-[#FFFFFF] rounded-lg w-full h-14 pl-8 "
-                        onChange={(e) =>
-                          setClientInfo((prevState) => ({
-                            ...prevState,
-                            cardNumber: parseInt(e?.target.value),
-                          }))
-                        }
-                      />
-                    </div>
-                    <div className="flex flex-col sm:ml-4 gap-y-4">
-                      <label
-                        htmlFor="expirationDate"
-                        className="font-bold whitespace-nowrap overflow-x-clip"
-                      >
-                        Expiration Date
-                      </label>
-                      <input
-                        type="text"
-                        value={expirationDate}
-                        name="expirationDate"
-                        id="expirationDate"
-                        placeholder="MM/YY"
-                        maxLength={5}
-                        className="bg-[#FFFFFF] rounded-lg w-full h-14 pl-8 "
-                        onChange={(e) => {
-                          setexpirationDate(
-                            formatCardExpirationDate(e.target.value)
-                          );
-                          setClientInfo((prevState) => ({
-                            ...prevState,
-                            expirationDate: new Date(e.target.value),
-                          }));
-                        }}
-                      />
-                    </div>
-                    <div className="flex flex-col sm:mt-6 gap-y-4 sm:mr-4">
-                      <label
-                        htmlFor="cardHolder"
-                        className="font-bold whitespace-nowrap overflow-x-clip"
-                      >
-                        Card Holder
-                      </label>
-                      <input
-                        type="text"
-                        name="cardHolder"
-                        id="cardHolder"
-                        placeholder="Card Holder"
-                        className="bg-[#FFFFFF] rounded-lg h-14 pl-8 border-0 w-full"
-                        onChange={(e) =>
-                          setClientInfo((prevState) => ({
-                            ...prevState,
-                            cardHolder: e.target.value,
-                          }))
-                        }
-                      />
-                    </div>
-                    <div className="flex flex-col sm:mt-6 gap-y-4 sm:ml-4">
-                      <label htmlFor="CCV" className="font-bold">
-                        CCV
-                      </label>
-                      <input
-                        type="text"
-                        name="CCV"
-                        id="CCV"
-                        placeholder="CCV"
-                        className="bg-[#FFFFFF] rounded-lg h-14 pl-8 mr-4 border-0 w-full"
-                        onChange={(e) =>
-                          setClientInfo((prevState) => ({
-                            ...prevState,
-                            CVC: parseInt(e.target.value),
-                          }))
-                        }
-                      />
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div> */}
-
           {/* Confirmation */}
           <div className="col-start-1 row-start-4 sm:row-start-3 h-full">
             <div className="bg-[#FFFFFF] rounded-lg p-8 h-full">
@@ -454,6 +318,7 @@ const BookingForm = () => {
                     name="termsAndConditions"
                     id="termsAndConditions"
                     className="size-6"
+                    required
                     onChange={() => {
                       setClientInfo((prevState) => ({
                         ...prevState,
@@ -471,8 +336,13 @@ const BookingForm = () => {
                 </div>
                 <button
                   className="w-[140px] h-14 rounded-lg bg-[#3563E9] text-[#FFFFFF]"
-                  onClick={() => {
-                    navigate(`../payment/${id}`);
+                  onClick={(e) => {
+                    handleSubmit(e,id,clientInfo);
+                    if (checkCompletion(clientInfo)) {
+                      navigate(`../payment/${id}`);
+                    } else {
+                      toast.error("Please fill out all the fields!");
+                    }
                   }}
                 >
                   Rent Now
@@ -521,17 +391,11 @@ const BookingForm = () => {
                     <p>Subtotal</p>
                     <p className="font-bold">{`$${carInfo?.price}`}</p>
                   </div>
-                  {/* <div className="flex flex-row justify-between">
-                    <p>Tax</p>
-                    <p className="font-bold">
-                      ${(carInfo?.price as number) * tax}
-                    </p>
-                  </div> */}
                 </div>
                 <div className="flex flex-row items-center rounded-lg gap-x-8 gap-y-4 relative h-14">
                   <input
                     type="text"
-                    className="bg-[#F6F7F9] w-full rounded-lg placeholder:pl-8 h-14"
+                    className="bg-[#F6F7F9] w-full rounded-lg  pl-8 h-14"
                     placeholder="Apply promo code"
                   />
                   <button className="absolute font-semibold text-black float-end right-0 text-center h-14 mr-8">
@@ -546,8 +410,7 @@ const BookingForm = () => {
                     </p>
                   </div>
                   <p className="text-3xl font-bold">
-                    $
-                    {(carInfo?.price as number)}
+                    ${carInfo?.price as number}
                   </p>
                 </div>
               </div>

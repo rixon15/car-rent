@@ -1,6 +1,6 @@
 import './index.css'
 import { Route, Routes } from 'react-router-dom'
-import BookingForm from './components/BookingForm'
+import BookingForm from './pages/BookingPage'
 import CheckoutPage from './pages/CheckoutPage'
 
 function App() {

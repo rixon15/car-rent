@@ -12,6 +12,8 @@ export const paymentIntentHandler = catchErrors(async (req, res) => {
   const car = await CarModel.findById(req?.params.id);
   appAssert(car, NOT_FOUND, "Car not found in the database");
 
+  // const {name, phoneNumber, address} = req?.query
+
   const session = await stripe.checkout.sessions.create({
     ui_mode: "embedded",
     billing_address_collection: "auto",

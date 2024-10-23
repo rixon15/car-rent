@@ -96,3 +96,10 @@ export const deleteCarHandler = catchErrors(async (req, res) => {
     message: "Car deleted successfully",
   });
 });
+
+export const bookCarHandler = catchErrors(async (req, res) => {
+  const {NAME, PHONENUMBER, ADDRESS, PICKUP_DATE, PICKUP_TIME, DROPOFF_DATE, DROPOFF_TIME, MARKETING} = req.query
+
+
+  return res.json({message: 'test'})
+})
