@@ -12,8 +12,6 @@ export const paymentIntentHandler = catchErrors(async (req, res) => {
   const car = await CarModel.findById(req?.params.id);
   appAssert(car, NOT_FOUND, "Car not found in the database");
 
-  // const {name, phoneNumber, address} = req?.query
-
   const session = await stripe.checkout.sessions.create({
     ui_mode: "embedded",
     billing_address_collection: "auto",
@@ -22,9 +20,9 @@ export const paymentIntentHandler = catchErrors(async (req, res) => {
       {
         price_data: {
           currency: "usd",
-          unit_amount: 500,
+          unit_amount: car.price,
           product_data: {
-            name: "test car1",
+            name: car.name,
           },
         },
         quantity: 1,
@@ -34,5 +32,5 @@ export const paymentIntentHandler = catchErrors(async (req, res) => {
     return_url: `${req.headers.origin}/return?session_id={CHECKOUT_SESSION_ID}`,
   });
 
-  return res.json({ clientSecret: session.client_secret });
+  return res.status(OK).json({ clientSecret: session.client_secret });
 });

@@ -49,7 +49,6 @@ const CheckoutPage = () => {
         {clientSecret && (
           <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
             <EmbeddedCheckout />
-            <button>TEST</button>
           </EmbeddedCheckoutProvider>
         )}
       </div>

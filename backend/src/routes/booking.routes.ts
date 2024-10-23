@@ -2,7 +2,7 @@ import { Router } from "express";
 import { createBookingHandler, deleteBookingHandler } from "../controllers/booking.controller";
 
 const bookingRoutes = Router();
-//prefix /:id/booking
+//prefix /booking
 bookingRoutes.post("/:id", createBookingHandler);
 bookingRoutes.delete("/:id", deleteBookingHandler);
 

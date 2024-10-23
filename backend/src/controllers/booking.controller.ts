@@ -22,6 +22,7 @@ const bookingSchema = z.object({
 });
 
 export const createBookingHandler = catchErrors(async (req, res) => {
+
   const request = bookingSchema.parse({ ...req.body });
 
   //check if the booking is already in the database

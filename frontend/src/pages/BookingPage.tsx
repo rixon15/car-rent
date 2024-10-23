@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TimePicker from "react-time-picker";
 import DatePicker from "react-datepicker";
 import { SECURITY } from "../constants/svgPath";
@@ -35,18 +35,24 @@ interface IcarInfo {
   __v: number;
 }
 
-const handleSubmit = (e,id,clientInfo: IclientInfo) => {
+const handleSubmit = async (
+  e: React.FormEvent<HTMLButtonElement>,
+  carId: string,
+  clientInfo: IclientInfo
+) => {
   e.preventDefault();
-  axios.post(
-    `http://localhost:4004/car/${id}/booking/?NAME=${clientInfo.name}&&PHONE_NUMBER=${clientInfo.phoneNumber}&&ADDRESS=${clientInfo.address}&&PICKUP_DATE=${clientInfo.pickupDate}&&PICKUP_TIME=${clientInfo.pickupTime}&&DROPOFF_DATE=${clientInfo.dropoffDate}&&DROPOFF_TIME=${clientInfo.dropoffTime}&&MARKETING=${clientInfo.marketing}`
-  );
+
+  const bookingInfo = {
+    ...clientInfo,
+    carId: carId,
+    userId: "66f4417a440af55eab62a48d",
+  };
+
+  await axios.post(`http://localhost:4004/booking/${carId}`, bookingInfo);
 };
 
 const checkCompletion = (clientInfo: IclientInfo) => {
   let result: boolean = false;
-
-  const date = new Date();
-
 
   if (
     clientInfo.name.length > 0 &&
@@ -97,7 +103,7 @@ const BookingForm = () => {
 
   const [clientInfo, setClientInfo] = useState<IclientInfo>({
     name: "",
-    phoneNumber: '',
+    phoneNumber: "",
     address: "",
     pickupDate: new Date(),
     pickupTime: "10:00",
@@ -337,7 +343,7 @@ const BookingForm = () => {
                 <button
                   className="w-[140px] h-14 rounded-lg bg-[#3563E9] text-[#FFFFFF]"
                   onClick={(e) => {
-                    handleSubmit(e,id,clientInfo);
+                    handleSubmit(e, id as string, clientInfo);
                     if (checkCompletion(clientInfo)) {
                       navigate(`../payment/${id}`);
                     } else {
