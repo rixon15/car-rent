@@ -9,3 +9,4 @@ const getEnv = (key: string, defaultValue?: string): string => {
 };
 
 export const REACT_APP_STRIPE_SECRET = getEnv("REACT_APP_STRIPE_SECRET");
+// export const VITE_API_URL = getEnv("VITE_API_URL");

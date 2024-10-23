@@ -1,44 +1,8 @@
-import axios from "axios";
-import { FormEvent, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
-interface IuserInfo {
-  email: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
-}
-
-const handleSubmit = async (
-  e: FormEvent,
-  userInfo: IuserInfo,
-  navigate: Function
-) => {
-  e.preventDefault();
-
-  let response;
-
-  try {
-    response = await axios.post(
-      `http://localhost:4004/auth/register`,
-      userInfo
-    );
-  } catch (error) {
-    console.error(error);
-  }
-  if (response?.status === 201) {
-    toast.success("The registration was successfull");
-  } else if (response?.status === 409) {
-    toast.error("The email is already in use");
-  } else {
-    toast.error("Ooops! Something went wrong!");
-  }
-
-  setTimeout(() => {
-    navigate("/");
-  }, 2500);
-};
+import { register } from "../lib/api.auth";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -47,6 +11,16 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
+
+  const { mutate: createAccount, error, isError} = useMutation({
+    mutationFn: register,
+    onSuccess: () => {
+      navigate("/", { replace: true });
+    },
+    onError: () => {
+      toast.error(error?.message || "An error occured");
+    },
+  });
 
   return (
     <div className="bg-slate-300 w-screen font-sans text-gray-900 min-h-svh">
@@ -72,13 +46,6 @@ const RegisterPage = () => {
         <form
           className="shadow-lg mb-4 rounded-lg border border-gray-100 py-10 px-8 bg-[#F6F7F9]"
           id="registerForm"
-          onSubmit={(e) => {
-            handleSubmit(
-              e,
-              { email, phoneNumber, password, confirmPassword },
-              navigate
-            );
-          }}
         >
           <div className="mb-4">
             <label className="mb-2 block text-sm font-bold" htmlFor="email">
@@ -135,6 +102,10 @@ const RegisterPage = () => {
               placeholder="******************"
               required
               onChange={(e) => setConfirmPassword(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" &&
+                createAccount({ email, phoneNumber, password, confirmPassword })
+              }
             />
           </div>
           <div className="mb-6">
@@ -165,7 +136,10 @@ const RegisterPage = () => {
 
             <button
               className="cursor-pointer rounded bg-blue-600 py-2 px-8 text-center text-lg font-bold  text-white"
-              type="submit"
+              type="button"
+              onClick={() =>
+              {createAccount({ email, phoneNumber, password, confirmPassword }); console.log(typeof error?.message)}
+              }
             >
               Create account
             </button>
