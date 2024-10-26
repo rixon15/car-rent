@@ -12,7 +12,7 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
-  const { mutate: createAccount, error, isError} = useMutation({
+  const { mutate: createAccount, error} = useMutation({
     mutationFn: register,
     onSuccess: () => {
       navigate("/", { replace: true });
