@@ -4,6 +4,7 @@ import BookingForm from "./pages/BookingPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       <Route path="/car/:id/booking" element={<BookingForm />} />
       <Route path="/payment/:id" element={<CheckoutPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/login" element={<LoginPage/>}/>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/email/verify/:code" element={<VerifyEmail />} />
     </Routes>
   );
 }
