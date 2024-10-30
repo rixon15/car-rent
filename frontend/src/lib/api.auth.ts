@@ -13,6 +13,6 @@ export const register = async (data: {
   await API.post("/auth/register", data);
 };
 
-export const verifyEmail = async (verificationCode) => {
-  API.get(`/auth/email/verify/${verificationCode}`);
+export const verifyEmail = async (verificationCode : string) => {
+  return await API.get(`/auth/email/verify/${verificationCode}`);
 };

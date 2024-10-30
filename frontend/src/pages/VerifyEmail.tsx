@@ -7,22 +7,22 @@ import { Link } from "react-router-dom";
 const VerifyEmail = () => {
   const { code } = useParams();
 
-  const { isPending, isSuccess, isError } = useQuery({
+  const {isSuccess, isError } = useQuery({
     queryKey: ["emailVerification", code],
     queryFn: () => verifyEmail(code as string),
   });
 
   return (
-    <div className="bg-slate-300 w-screen font-sans text-gray-900 min-h-svh flex items-center justify-center">
+    <div className="bg-slate-300 w-screen font-sans text-gray-900 min-h-svh flex items-center justify-center text-opacity-0">
       <Toaster position="top-center" reverseOrder={false} />
-      {isPending
-        ? toast.loading("loading")
-        : isSuccess
+      {isSuccess
         ? toast.success("Email verified successfully")
         : isError
         ? toast.error("Invalid link")
-        : null}
-        <Link to={'/'} replace>Back to Home</Link>
+        :''}
+      <Link to={"/"} replace className="font-bold text-xl text-blue-600">
+        Back to Home
+      </Link>
     </div>
   );
 };

@@ -62,7 +62,7 @@ export const createAccount = async (data: CreateAccountParams) => {
     expiresAt: oneYearFromNow(),
   });
 
-  const url = `${APP_ORIGIN}/email/verify/${verificationCode._id}`;
+  const url = `http://localhost:5173/email/verify/${verificationCode._id}`;
   // send verification email
   await sendMail({
     to: user.email,
