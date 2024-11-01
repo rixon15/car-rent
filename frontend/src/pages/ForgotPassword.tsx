@@ -33,7 +33,10 @@ const ForgotPassword = () => {
         <form
           className="shadow-lg mb-4 rounded-lg border border-gray-100 py-10 px-8 bg-[#F6F7F9]"
           id="registerForm"
-          //   onSubmit={() => sendPasswordReset(email)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendPasswordReset(email);
+          }}
         >
           <div className="mb-4">
             <label className="mb-2 block text-sm font-bold" htmlFor="email">
@@ -52,8 +55,7 @@ const ForgotPassword = () => {
           <div className="flex items-center justify-center">
             <button
               className="cursor-pointer rounded bg-blue-600 py-2 px-8 text-center text-lg font-bold  text-white"
-              type="button"
-              onClick={() => sendPasswordReset(email)}
+              type="submit"
             >
               Reset password
             </button>

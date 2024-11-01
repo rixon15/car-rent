@@ -1,5 +1,10 @@
 import API from "../config/apiClient";
 
+interface IresetPassword {
+  verificationCode: string;
+  password: string;
+}
+
 export const login = async (data: { email: string; password: string }) => {
   await API.post("/auth/login", data);
 };
@@ -19,4 +24,11 @@ export const verifyEmail = async (verificationCode: string) => {
 
 export const sendPasswordResetEmail = async (email: string) => {
   return await API.post("/auth/password/forgot", { email });
+};
+
+export const resetPassword = async ({
+  verificationCode,
+  password,
+}: IresetPassword) => {
+  return await API.post("/auth/password/reset", { verificationCode, password });
 };
