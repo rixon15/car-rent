@@ -85,7 +85,7 @@ const LoginPage = () => {
               type="button"
               onClick={() => signIn({ email, password })}
             >
-              Sing In
+              Sign In
             </button>
           </div>
           <div className="flex justify-center items-center font-bold">

@@ -7,10 +7,18 @@ import LoginPage from "./pages/LoginPage";
 import VerifyEmail from "./pages/VerifyEmail";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import AppContainer from "./components/AppContainer";
+
+export const Home = () => {
+  return <div>Home Test</div>
+}
 
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<AppContainer />}>
+        <Route index element={<Home/>}/>
+      </Route>
       <Route path="/car/:id/booking" element={<BookingForm />} />
       <Route path="/payment/:id" element={<CheckoutPage />} />
       <Route path="/register" element={<RegisterPage />} />

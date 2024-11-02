@@ -6,7 +6,7 @@ interface IresetPassword {
 }
 
 export const login = async (data: { email: string; password: string }) => {
-  await API.post("/auth/login", data);
+  return await API.post("/auth/login", data);
 };
 
 export const register = async (data: {
@@ -31,4 +31,8 @@ export const resetPassword = async ({
   password,
 }: IresetPassword) => {
   return await API.post("/auth/password/reset", { verificationCode, password });
+};
+
+export const getUser = async () => {
+  return API.get("/user");
 };

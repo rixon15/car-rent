@@ -49,8 +49,6 @@ export const loginHandler = catchErrors(async (req, res) => {
 
   const { accessToken, refreshToken } = await loginUser(request);
 
-  console.log(request)
-
   return setAuthCookies({ res, accessToken, refreshToken }).status(OK).json({
     message: "Login succesful",
   });

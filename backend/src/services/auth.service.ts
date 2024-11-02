@@ -120,7 +120,7 @@ export const loginUser = async ({
     userAgent,
   });
 
-  const sessionInfo = {
+  const sessionInfo: RefreshTokenPayload = {
     sessionId: session._id,
   };
 

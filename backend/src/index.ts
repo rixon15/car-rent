@@ -15,6 +15,7 @@ import bookingRoutes from "./routes/booking.routes";
 
 const app = express();
 
+
 app.use(express.json({ limit: "25mb" }));
 app.use(express.urlencoded({ extended: true, limit: "25mb" }));
 app.use(
@@ -25,10 +26,6 @@ app.use(
 );
 // app.use(cors());
 app.use(cookieParser());
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  next();
-});
 
 app.get("/health", (req, res, next) => {
   return res.status(200).json({ status: "healthy" });

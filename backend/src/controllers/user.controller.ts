@@ -4,6 +4,9 @@ import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 
 export const getUserHandler = catchErrors(async (req, res) => {
+
+  console.log(req.body)
+
   const user = await UserModel.findById(req.userId);
   appAssert(user, NOT_FOUND, "User not found");
 
