@@ -10,9 +10,9 @@ const AppContainer = () => {
       <Loader />
     </div>
   ) : user ? (
-    <div>
+    <>
       <Outlet />
-    </div>
+    </>
   ) : (
     <Navigate
       to={"/login"}
