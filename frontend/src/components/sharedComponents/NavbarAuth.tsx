@@ -1,8 +1,12 @@
+import { Bell, Heart, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
-const NavbarNoAuth = () => {
+const NavbarAuth = () => {
+  const { user } = useAuth();
+
   return (
-    <nav className="mx-2">
+    <nav className="">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row gap-x-16">
           <h1 className="uppercase text-5xl text-blue-500 flex items-center justify-center">
@@ -11,7 +15,6 @@ const NavbarNoAuth = () => {
           <div className="border-blue-600 focus-within:border-none focus-within:ring focus-within:ring-offset-2 my-10  h-10 items-center justify-start border-2 leading-4 ring-blue-600 sm:w-96 rounded-full hidden md:flex">
             <input
               placeholder="Search"
-              value=""
               className="peer ml-2 flex-grow bg-transparent text-gray-500 outline-none"
             />
             <button
@@ -38,12 +41,30 @@ const NavbarNoAuth = () => {
             </button>
           </div>
         </div>
-        <Link
-          to={"/login"}
-          className="text-2xl flex flex-row items-center justify-center"
-        >
-          Sign in
-        </Link>
+        <div className="flex flex-row items-center justify-between gap-x-5">
+          <Link to={`/${user?._id}/likes`}>
+            <Heart className="fill-gray-400 text-gray-400 size-11 border-2 rounded-full p-3" />
+          </Link>
+          <Link to={`/${user?._id}/notificaions`}>
+            <Bell className="fill-gray-400 text-gray-400 size-11 border-2 rounded-full p-3" />
+          </Link>
+          <Link to={`/${user?._id}/settings`}>
+            <Settings className=" text-gray-400 size-11 border-2 rounded-full p-3" />
+          </Link>
+          <Link to={`/${user?._id}/dashboard`}>
+            {user?.profilePhoto ? (
+              <img
+                src={`${user?.profilePhoto}`}
+                alt="profile photo"
+                className="text-black size-11  rounded-full "
+              />
+            ) : (
+              <div className="text-black size-11  rounded-full flex items-center justify-center bg-blue-500 uppercase text-3xl">
+                {user?.email.slice(0, 1)}
+              </div>
+            )}
+          </Link>
+        </div>
       </div>
       <div className="flex flex-row items-center">
         <div className="border-blue-600 focus-within:border-none focus-within:ring focus-within:ring-offset-2 my-10  h-10 items-center justify-start border-2 leading-4 ring-blue-600 rounded-full md:hidden flex w-full">
@@ -80,4 +101,4 @@ const NavbarNoAuth = () => {
   );
 };
 
-export default NavbarNoAuth;
+export default NavbarAuth;
