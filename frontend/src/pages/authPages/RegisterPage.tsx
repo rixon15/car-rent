@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { register } from "../lib/api.auth";
+import { register } from "../../lib/api.auth";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");

@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { sendPasswordResetEmail } from "../lib/api.auth";
+import { sendPasswordResetEmail } from "../../lib/api.auth";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

@@ -2,13 +2,13 @@ import "./index.css";
 import { Route, Routes } from "react-router-dom";
 import BookingForm from "./pages/BookingPage";
 import CheckoutPage from "./pages/CheckoutPage";
-import RegisterPage from "./pages/RegisterPage";
-import LoginPage from "./pages/LoginPage";
-import VerifyEmail from "./pages/VerifyEmail";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
 import AppContainer from "./components/AppContainer";
+import RegisterPage from "./pages/authPages/RegisterPage";
 import HomePage from "./pages/HomePage";
+import VerifyEmail from "./pages/authPages/VerifyEmail";
+import LoginPage from "./pages/authPages/LoginPage";
+import ForgotPassword from "./pages/authPages/ForgotPassword";
+import ResetPassword from "./pages/authPages/ResetPassword";
 
 export const Home = () => {
   return <div>Home Test</div>

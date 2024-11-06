@@ -1,6 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import { Link, useSearchParams } from "react-router-dom";
-import ResetPasswordForm from "../components/ResetPasswordForm";
+import ResetPasswordForm from "../../components/ResetPasswordForm";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();

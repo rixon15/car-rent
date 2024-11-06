@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../lib/api.auth";
+import { login } from "../../lib/api.auth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");

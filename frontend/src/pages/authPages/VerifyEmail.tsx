@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { verifyEmail } from "../lib/api.auth";
 import { Link } from "react-router-dom";
+import { verifyEmail } from "../../lib/api.auth";
 
 const VerifyEmail = () => {
   const { code } = useParams();
