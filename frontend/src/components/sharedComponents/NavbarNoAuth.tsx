@@ -1,21 +1,38 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavbarNoAuth = () => {
+  const [searchParams, setsearchParams] = useState("");
+  const navigate = useNavigate();
+
   return (
     <nav className="">
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row gap-x-16">
-          <h1 className="uppercase text-5xl text-blue-500 flex items-center justify-center">
+          <Link
+            to={"/"}
+            className="uppercase text-5xl text-blue-500 flex items-center justify-center"
+          >
             morent
-          </h1>
+          </Link>
           <div className="border-blue-600 focus-within:border-none focus-within:ring focus-within:ring-offset-2 my-10  h-10 items-center justify-start border-2 leading-4 ring-blue-600 sm:w-96 rounded-full hidden md:flex">
             <input
               placeholder="Search"
               className="peer ml-2 flex-grow bg-transparent text-gray-500 outline-none"
+              onChange={(e) => setsearchParams(e.target.value)}
+              onKeyDown={(e) => {
+                e.key === "Enter" &&
+                  navigate(`/cars&searchParams=${searchParams}`);
+              }}
             />
             <button
               type="button"
               className="peer-focus:mr-2 z-20 cursor-pointer text-blue-600 outline-none duration-150 hover:scale-125"
+              onClick={(e) =>
+                searchParams === ""
+                  ? navigate("/cars")
+                  : navigate(`/cars&searchParams=${searchParams}`)
+              }
             >
               <svg className="h-6 w-6 stroke-2" viewBox="0 0 32 32" fill="none">
                 <circle
