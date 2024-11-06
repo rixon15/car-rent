@@ -12,9 +12,11 @@ import sessionRoutes from "./routes/session.route";
 import carRoutes from "./routes/car.routes";
 import paymentRoutes from "./routes/payment.routes";
 import bookingRoutes from "./routes/booking.routes";
+import carSeeder from "./seeders/car.seeder";
 
 const app = express();
 
+const needSeeding = false;
 
 app.use(express.json({ limit: "25mb" }));
 app.use(express.urlencoded({ extended: true, limit: "25mb" }));
@@ -46,6 +48,9 @@ app.use(errorHandler);
 app.listen(PORT, async () => {
   try {
     await conncetToDatabase();
+    if(needSeeding) {
+      await carSeeder();
+    }
     console.log(`Server is running on port ${PORT} in ${NODE_ENV} enviroment`);
     console.log("Succesfully connected to the databse");
   } catch (error) {
