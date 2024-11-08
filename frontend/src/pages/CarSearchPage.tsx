@@ -54,6 +54,7 @@ const CarSearchPage = (props: any) => {
       try {
         const data: iData = await API.get(`car/search`, {
           params: {
+            page: page,
             carTypes: carTypes,
             capacity: capacity,
             searchTerm: "test",

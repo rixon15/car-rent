@@ -105,6 +105,7 @@ export const searchCarHandler = catchErrors(async (req, res) => {
   //extract the options
   const searchOptions = extractSearchOptions(req.query);
 
+  const page = req.query.page;
   const TypesRegex = new RegExp(`${searchOptions.carTypes.join("|")}`);
   const nameRegex = new RegExp(req.query.searchTerm as string);
   const capacityValues: number[] = [];
@@ -118,7 +119,7 @@ export const searchCarHandler = catchErrors(async (req, res) => {
     name: { $regex: nameRegex },
     type: { $regex: TypesRegex },
     capacity: { $in: capacityValues },
-  });
+  }).limit(parseInt(page as string) * 9);
 
   res.status(OK).json(carList);
 });
