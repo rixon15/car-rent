@@ -25,9 +25,8 @@ interface iCar {
 
 type iData = iCar[];
 
-const HomePage = () => {
-  // const { user } = useAuth();
-  const user = false;
+const HomePage = (props: any) => {
+  const user = props.user;
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
