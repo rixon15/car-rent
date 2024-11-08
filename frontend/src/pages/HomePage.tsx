@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import API from "../config/apiClient";
 import ItemCard from "../components/ItemCard";
 
-
 interface iCar {
   _id: string;
   name: string;
@@ -27,13 +26,18 @@ interface iCar {
 type iData = iCar[];
 
 const HomePage = () => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const user = false;
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
   const [popularCars, setPopularCars] = useState<iData | null>(null);
+  const [carList, setCarList] = useState<iData | null>(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
+    setIsLoading(true);
+
     const fetchPopularCars = async () => {
       try {
         const popularCars: iData = await API.get("/car/popular");
@@ -46,10 +50,30 @@ const HomePage = () => {
     };
 
     fetchPopularCars();
-    console.log(popularCars);
   }, []);
 
-  if (!isLoading && popularCars) {
+  useEffect(() => {
+    const fetchCarList = async () => {
+      try {
+        const data: iData = await API.get(`/car/list?page=${page}&number=8`);
+        if (carList) {
+          setCarList((prevState) => [...prevState, ...data]);
+        } else {
+          setCarList(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCarList();
+  }, [page]);
+
+  if (!isLoading && carList) {
+    console.log(carList);
+  }
+
+  if (!isLoading) {
     return (
       <div className="bg-gray-100 w-full">
         <header>
@@ -58,6 +82,7 @@ const HomePage = () => {
               {user ? <NavbarAuth /> : <NavbarNoAuth />}
             </div>
           </div>
+          {/* Hero section */}
           <div className="container px-2 sm:mx-auto">
             <section id="hero" className="mt-8">
               <div className="grid w-full justify-normal lg:justify-between gap-x-8">
@@ -109,14 +134,42 @@ const HomePage = () => {
             </section>
           </div>
         </header>
+        {/* Popular cars section */}
         <div className="container px-2 sm:mx-auto">
-          <section id="popular cars">
+          <section id="popularCars">
             <div className="flex flex-row items-center justify-between">
-            <p className="text-gray-500 px-5 my-10 font-semibold">Popular Cars</p>
-            <Link to={'/cars'} className="font-semibold text-blue-500">View All</Link>
+              <p className="text-gray-500 px-5 my-10 font-semibold">
+                Popular Cars
+              </p>
+              <Link to={"/cars"} className="font-semibold text-blue-500">
+                View All
+              </Link>
             </div>
-            <div className="flex flex-row flex-wrap justify-center sm:justify-between gap-y-8">
-              {popularCars?.map((car, index) => ItemCard(car, index))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 row-auto justify-center sm:justify-between gap-8">
+              {popularCars?.map((car, index) => ItemCard(car, index, navigate))}
+            </div>
+          </section>
+        </div>
+        {/* Recommended cars section */}
+        <div className="container px-2 sm:mx-auto">
+          <section id="recommendedCars">
+            <div className="flex flex-row items-center justify-start">
+              <p className="text-gray-500 px-5 my-10 font-semibold">
+                Recommended Cars
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 row-auto justify-center sm:justify-between gap-8">
+              {carList?.map((car, index) => ItemCard(car, index, navigate))}
+            </div>
+            <div className="flex flex-row items-center justify-center w-full my-16">
+              <button
+                className="w-36 h-11 bg-blue-600 text-white rounded-md"
+                onClick={() => {
+                  setPage(page + 1);
+                }}
+              >
+                Show More
+              </button>
             </div>
           </section>
         </div>

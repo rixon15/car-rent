@@ -1,3 +1,5 @@
+import { NavigateFunction } from "react-router-dom";
+
 interface iCar {
   _id: string;
   name: string;
@@ -14,12 +16,13 @@ interface iCar {
   __v: number;
 }
 
-const ItemCard = (car: iCar, index: number) => {
-
-    console.log(car.fuelCapacity)
-
+const ItemCard = (car: iCar, index: number, navigate: NavigateFunction) => {
+    
   return (
-    <div className="flex flex-col p-6 rounded-xl bg-white w-full sm:w-auto" key={index}>
+    <div
+      className="flex flex-col p-6 rounded-xl bg-white w-full sm:w-auto"
+      key={index}
+    >
       <p className="font-bold text-xl mb-1">{car.name}</p>
       <p className="font-sm text-gray-500 mb-20 font-bold">{car.type}</p>
       <img src={car.image} alt="ar image" className="w-full self-center mb-9" />
@@ -48,7 +51,9 @@ const ItemCard = (car: iCar, index: number) => {
           }/ `}</p>
           <p className="text-sm text-gray-500 text-center ml-1">day</p>
         </div>
-        <button className="w-32 h-11 bg-blue-600 text-white rounded-sm"
+        <button
+          className="w-32 h-11 bg-blue-600 text-white rounded-sm"
+          onClick={() => navigate(`/car/${car._id}`)}
         >
           Rent Now
         </button>

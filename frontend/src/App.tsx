@@ -9,6 +9,7 @@ import VerifyEmail from "./pages/authPages/VerifyEmail";
 import LoginPage from "./pages/authPages/LoginPage";
 import ForgotPassword from "./pages/authPages/ForgotPassword";
 import ResetPassword from "./pages/authPages/ResetPassword";
+import CarSearchPage from "./pages/CarSearchPage";
 
 export const Home = () => {
   return <div>Home Test</div>
@@ -21,6 +22,7 @@ function App() {
         <Route index element={<Home/>}/>
       </Route> */}
       <Route path="/" element={<HomePage/>}/>
+      <Route path="/cars" element={<CarSearchPage/>}/>
       <Route path="/car/:id/booking" element={<BookingForm />} />
       <Route path="/payment/:id" element={<CheckoutPage />} />
       <Route path="/register" element={<RegisterPage />} />

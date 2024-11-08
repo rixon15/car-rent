@@ -76,6 +76,7 @@ export const getPopularCarsHandler = catchErrors(async (req, res) => {
 export const getListOfCarsHandler = catchErrors(async (req, res) => {
   const pageNumber: number = parseInt(req.query.page as string);
   const carsPerPage: number = parseInt(req.query.number as string);
+
   //get the list of cars by page
   const carList = await CarModel.find()
     .skip((pageNumber - 1) * carsPerPage)
