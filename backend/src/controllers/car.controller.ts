@@ -119,7 +119,8 @@ export const searchCarHandler = catchErrors(async (req, res) => {
     name: { $regex: nameRegex },
     type: { $regex: TypesRegex },
     capacity: { $in: capacityValues },
-  }).limit(parseInt(page as string) * 9);
+  })
+    .limit(parseInt(page as string) * 9);
 
   res.status(OK).json(carList);
 });

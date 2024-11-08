@@ -56,7 +56,7 @@ const HomePage = (props: any) => {
       try {
         const data: iData = await API.get(`/car/list?page=${page}&number=8`);
         if (carList) {
-          setCarList((prevState) => [...prevState, ...data]);
+          setCarList((prevState) => [...prevState!, ...data]);
         } else {
           setCarList(data);
         }

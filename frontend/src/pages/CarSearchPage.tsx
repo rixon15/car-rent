@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import NavbarAuth from "../components/sharedComponents/NavbarAuth";
 import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth";
 import Footer from "../components/sharedComponents/Footer";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import API from "../config/apiClient";
 import ItemCard from "../components/ItemCard";
 import axios from "axios";
@@ -24,6 +24,17 @@ interface iCar {
 }
 
 type iData = iCar[];
+
+const checkCheckbox = (
+  inputElement: HTMLInputElement,
+  object: { [key: string]: boolean },
+  setState: Function
+) => {
+  const newState = Object.assign({}, object);
+  newState[inputElement.id as string] = !newState[inputElement.id];
+  setState(newState);
+
+};
 
 const CarSearchPage = (props: any) => {
   const user = props.user;
@@ -49,8 +60,8 @@ const CarSearchPage = (props: any) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchCarList = async () => {
-      setIsLoading(true);
       try {
         const data: iData = await API.get(`car/search`, {
           params: {
@@ -60,24 +71,36 @@ const CarSearchPage = (props: any) => {
             searchTerm: "test",
           },
         });
-        if (carList) {
-          setCarList((prevState) => [...prevState, ...data]);
-        } else {
-          setCarList(data);
-        }
+        setCarList(data);
       } catch (error) {
         console.log(error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
     fetchCarList();
-  }, [page]);
+    setIsLoading(false);
+  }, []);
 
-  if (!isLoading) {
-    console.log(carList);
-  }
+  useEffect(() => {
+    const fetchCarList = async () => {
+      try {
+        const data: iData = await API.get(`car/search`, {
+          params: {
+            page: page,
+            carTypes: carTypes,
+            capacity: capacity,
+            searchTerm: "test",
+          },
+        });
+        setCarList(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCarList();
+  }, [page, carTypes, capacity]);
+
 
   if (!isLoading) {
     return (
@@ -90,36 +113,79 @@ const CarSearchPage = (props: any) => {
           </div>
         </header>
         <div className="flex flex-row">
-          <div className="flex flex-col h-screen bg-white w-[22rem] border-t border-gray-100 p-8 gap-y-14">
+          <div className="sm:flex flex-col bg-white w-[22rem] border-t border-gray-100 p-8 gap-y-14 hidden">
             <div className="flex flex-col">
               <p className="font-semibold text-xs mb-7 text-gray-300">Type</p>
               <ul>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="sport" id="sport" />
+                  <input
+                    type="checkbox"
+                    name="sport"
+                    id="sport"
+                    defaultChecked
+                    onChange={(e) =>
+                      checkCheckbox(e.target, carTypes, setCarTypes)
+                    }
+                  />
                   <label htmlFor="sport">Sport</label>
                 </li>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="suv" id="suv" />
+                  <input
+                    type="checkbox"
+                    name="suv"
+                    id="suv"
+                    onChange={(e) =>
+                      checkCheckbox(e.target, carTypes, setCarTypes)
+                    }
+                  />
                   <label htmlFor="suv" className="uppercase">
                     suv
                   </label>
                 </li>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="mpv" id="mpv" />
+                  <input
+                    type="checkbox"
+                    name="mpv"
+                    id="mpv"
+                    onChange={(e) =>
+                      checkCheckbox(e.target, carTypes, setCarTypes)
+                    }
+                  />
                   <label htmlFor="mpv" className="uppercase">
                     mpv
                   </label>
                 </li>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="sedan" id="sedan" />
+                  <input
+                    type="checkbox"
+                    name="sedan"
+                    id="sedan"
+                    onChange={(e) =>
+                      checkCheckbox(e.target, carTypes, setCarTypes)
+                    }
+                  />
                   <label htmlFor="sedan">Sedan</label>
                 </li>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="coupe" id="coupe" />
+                  <input
+                    type="checkbox"
+                    name="coupe"
+                    id="coupe"
+                    onChange={(e) =>
+                      checkCheckbox(e.target, carTypes, setCarTypes)
+                    }
+                  />
                   <label htmlFor="coupe">Coupe</label>
                 </li>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="hatchback" id="hatchback" />
+                  <input
+                    type="checkbox"
+                    name="hatchback"
+                    id="hatchback"
+                    onChange={(e) =>
+                      checkCheckbox(e.target, carTypes, setCarTypes)
+                    }
+                  />
                   <label htmlFor="hatchback">Hatchback</label>
                 </li>
               </ul>
@@ -130,39 +196,68 @@ const CarSearchPage = (props: any) => {
               </p>
               <ul>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="2person" id="2person" />
-                  <label htmlFor="2person">2 Person</label>
+                  <input
+                    type="checkbox"
+                    name="person2"
+                    id="person2"
+                    defaultChecked
+                    onChange={(e) =>
+                      checkCheckbox(e.target, capacity, setCapacity)
+                    }
+                  />
+                  <label htmlFor="person2">2 Person</label>
                 </li>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="4person" id="4person" />
-                  <label htmlFor="4person">4 Person</label>
+                  <input
+                    type="checkbox"
+                    name="person4"
+                    id="person4"
+                    onChange={(e) =>
+                      checkCheckbox(e.target, capacity, setCapacity)
+                    }
+                  />
+                  <label htmlFor="person4">4 Person</label>
                 </li>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="6person" id="6person" />
-                  <label htmlFor="6person">6 Person</label>
+                  <input
+                    type="checkbox"
+                    name="person6"
+                    id="person6"
+                    onChange={(e) =>
+                      checkCheckbox(e.target, capacity, setCapacity)
+                    }
+                  />
+                  <label htmlFor="person6">6 Person</label>
                 </li>
                 <li className="flex flex-row gap-x-4 cursor-pointer">
-                  <input type="checkbox" name="8person" id="8person" />
-                  <label htmlFor="8person">8 Person</label>
+                  <input
+                    type="checkbox"
+                    name="person8"
+                    id="person8"
+                    onChange={(e) =>
+                      checkCheckbox(e.target, capacity, setCapacity)
+                    }
+                  />
+                  <label htmlFor="person8">8 Person</label>
                 </li>
               </ul>
             </div>
           </div>
-          {/* <div className="container sm:mx-auto px-2">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 row-auto justify-center sm:justify-between gap-8">
-                {carList?.map((car, index) => ItemCard(car, index, navigate))}
-              </div>
-              <div className="flex flex-row items-center justify-center w-full my-16">
-                <button
-                  className="w-36 h-11 bg-blue-600 text-white rounded-md"
-                  onClick={() => {
-                    setPage(page + 1);
-                  }}
-                >
-                  Show More
-                </button>
-              </div>
-            </div> */}
+          <div className="container sm:mx-auto px-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 row-auto justify-center sm:justify-between gap-8 p-8">
+              {carList?.map((car, index) => ItemCard(car, index, navigate))}
+            </div>
+            <div className="flex flex-row items-center justify-center w-full my-16">
+              <button
+                className="w-36 h-11 bg-blue-600 text-white rounded-md"
+                onClick={() => {
+                  setPage(page + 1);
+                }}
+              >
+                Show More
+              </button>
+            </div>
+          </div>
         </div>
         <div className="bg-white">
           <footer className="container px-2 sm:mx-auto">
