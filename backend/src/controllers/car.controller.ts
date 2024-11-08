@@ -10,6 +10,7 @@ import {
 import CarModel from "../models/car.model";
 import appAssert from "../utils/appAssert";
 import { uploadImage } from "../services/image.service";
+import extractSearchOptions from "../utils/extractSearchOptions";
 
 enum CAR_TYPES {
   Sport = "Sport",
@@ -98,6 +99,28 @@ export const deleteCarHandler = catchErrors(async (req, res) => {
   res.status(OK).json({
     message: "Car deleted successfully",
   });
+});
+
+export const searchCarHandler = catchErrors(async (req, res) => {
+  //extract the options
+  const searchOptions = extractSearchOptions(req.query);
+
+  const TypesRegex = new RegExp(`${searchOptions.carTypes.join("|")}`);
+  const nameRegex = new RegExp(req.query.searchTerm as string);
+  const capacityValues: number[] = [];
+  searchOptions.capacity.map((capacity) => {
+    capacityValues.push(
+      parseInt(capacity.slice(capacity.length - 1, capacity.length))
+    );
+  });
+
+  const carList = await CarModel.find({
+    name: { $regex: nameRegex },
+    type: { $regex: TypesRegex },
+    capacity: { $in: capacityValues },
+  });
+
+  res.status(OK).json(carList);
 });
 
 // export const bookCarHandler = catchErrors(async (req, res) => {

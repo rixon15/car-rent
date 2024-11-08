@@ -5,6 +5,7 @@ import Footer from "../components/sharedComponents/Footer";
 import { useEffect, useState } from "react";
 import API from "../config/apiClient";
 import ItemCard from "../components/ItemCard";
+import axios from "axios";
 
 interface iCar {
   _id: string;
@@ -29,6 +30,21 @@ const CarSearchPage = (props: any) => {
   const [carList, setCarList] = useState<iData | null>(null);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [carTypes, setCarTypes] = useState({
+    sport: true,
+    suv: false,
+    mpv: false,
+    sedan: false,
+    coupe: false,
+    hatchback: false,
+  });
+
+  const [capacity, setCapacity] = useState({
+    person2: true,
+    person4: false,
+    person6: false,
+    parson8: false,
+  });
 
   const navigate = useNavigate();
 
@@ -36,7 +52,13 @@ const CarSearchPage = (props: any) => {
     const fetchCarList = async () => {
       setIsLoading(true);
       try {
-        const data: iData = await API.get(`/car/search`);
+        const data: iData = await API.get(`car/search`, {
+          params: {
+            carTypes: carTypes,
+            capacity: capacity,
+            searchTerm: "test",
+          },
+        });
         if (carList) {
           setCarList((prevState) => [...prevState, ...data]);
         } else {
@@ -51,6 +73,10 @@ const CarSearchPage = (props: any) => {
 
     fetchCarList();
   }, [page]);
+
+  if (!isLoading) {
+    console.log(carList);
+  }
 
   if (!isLoading) {
     return (
@@ -121,21 +147,21 @@ const CarSearchPage = (props: any) => {
               </ul>
             </div>
           </div>
-          <div className="container sm:mx-auto px-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 row-auto justify-center sm:justify-between gap-8">
-              {carList?.map((car, index) => ItemCard(car, index, navigate))}
-            </div>
-            <div className="flex flex-row items-center justify-center w-full my-16">
-              <button
-                className="w-36 h-11 bg-blue-600 text-white rounded-md"
-                onClick={() => {
-                  setPage(page + 1);
-                }}
-              >
-                Show More
-              </button>
-            </div>
-          </div>
+          {/* <div className="container sm:mx-auto px-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 row-auto justify-center sm:justify-between gap-8">
+                {carList?.map((car, index) => ItemCard(car, index, navigate))}
+              </div>
+              <div className="flex flex-row items-center justify-center w-full my-16">
+                <button
+                  className="w-36 h-11 bg-blue-600 text-white rounded-md"
+                  onClick={() => {
+                    setPage(page + 1);
+                  }}
+                >
+                  Show More
+                </button>
+              </div>
+            </div> */}
         </div>
         <div className="bg-white">
           <footer className="container px-2 sm:mx-auto">

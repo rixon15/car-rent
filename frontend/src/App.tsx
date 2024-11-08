@@ -17,7 +17,8 @@ export const Home = () => {
 };
 
 function App() {
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const user = true;
 
   return (
     <Routes>
