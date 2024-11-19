@@ -2,7 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { API_KEY, API_SECRET, CLOUD_NAME } from "../constants/env";
 
 //image => base64 format
-export const uploadImage = async (image: any) => {
+export const uploadImage = async (image: string) => {
   cloudinary.config({
     cloud_name: CLOUD_NAME,
     api_key: API_KEY,

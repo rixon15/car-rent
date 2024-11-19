@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { MONGO_URI } from "../constants/env";
 
-const conncetToDatabase = async () => {
+const connectToDatabase = async () => {
   try {
     await mongoose.connect(MONGO_URI);
   } catch (error) {
@@ -10,4 +10,4 @@ const conncetToDatabase = async () => {
   }
 };
 
-export default conncetToDatabase;
+export default connectToDatabase;

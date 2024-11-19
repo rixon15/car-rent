@@ -11,6 +11,7 @@ import ForgotPassword from "./pages/authPages/ForgotPassword";
 import ResetPassword from "./pages/authPages/ResetPassword";
 import CarSearchPage from "./pages/CarSearchPage";
 import useAuth from "./hooks/useAuth";
+import CarDetailsPage from "./pages/CarDetailsPage";
 
 export const Home = () => {
   return <div>Home Test</div>;
@@ -27,8 +28,9 @@ function App() {
       </Route> */}
       <Route path="/" element={<HomePage user={user} />} />
       <Route path="/cars" element={<CarSearchPage user={user} />} />
-      <Route path="/car/:id/booking" element={<BookingForm />} />
-      <Route path="/payment/:id" element={<CheckoutPage />} />
+      <Route path="/car/:id" element={<CarDetailsPage/>}/>
+      {/* <Route path="/car/:id/booking" element={<BookingForm />} />
+      <Route path="/payment/:id" element={<CheckoutPage />} /> */}
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/email/verify/:code" element={<VerifyEmail />} />

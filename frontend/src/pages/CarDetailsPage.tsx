@@ -1,16 +1,16 @@
-import {useNavigate, useSearchParams} from "react-router-dom";
-import NavbarAuth from "../components/sharedComponents/NavbarAuth";
-import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth";
-import Footer from "../components/sharedComponents/Footer";
 import {useEffect, useState} from "react";
-import API from "../config/apiClient";
-import ItemCard from "../components/ItemCard";
+import API from "../config/apiClient.ts";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import NavbarAuth from "../components/sharedComponents/NavbarAuth.tsx";
+import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth.tsx";
+import Footer from "../components/sharedComponents/Footer.tsx";
+import ItemCard from "../components/ItemCard.tsx";
 
 interface iCar {
     _id: string;
     name: string;
     description: string;
-    image: string;
+    images: string[];
     type: string;
     capacity: number;
     transmission: string;
@@ -35,12 +35,13 @@ const checkCheckbox = (
 
 };
 
-const CarSearchPage = (props: any) => {
-    const user = props.user;
+const CarDetailsPage = () => {
+
+    const [carDetails, setCarDetails] = useState<iCar | null>(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const id = useParams().id;
+    const carPriceString = carDetails?.price.toString();
     const [carList, setCarList] = useState<iData | null>(null);
-    const [page, setPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(true);
-    const [searchParams, setSearchParams] = useSearchParams();
     const [carTypes, setCarTypes] = useState({
         sport: true,
         suv: false,
@@ -56,18 +57,31 @@ const CarSearchPage = (props: any) => {
         person6: false,
         parson8: false,
     });
+    const user = false;
 
     const navigate = useNavigate();
 
+
     useEffect(() => {
+        const fetchCarDetails = async () => {
+            setIsLoading(true);
+            try {
+                const data: iCar = await API.get(`/car/${id}`);
+                setCarDetails(data);
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setIsLoading(false);
+            }
+        }
         const fetchCarList = async () => {
             try {
                 const data: iData = await API.get(`car/search`, {
                     params: {
-                        page: page,
+                        page: 1,
                         carTypes: carTypes,
                         capacity: capacity,
-                        searchTerm: searchParams.get('searchParams'),
+                        searchTerm: '',
                     },
                 });
                 setCarList(data);
@@ -76,9 +90,10 @@ const CarSearchPage = (props: any) => {
             }
         };
 
+
         fetchCarList();
-        setIsLoading(false)
-    }, [page, carTypes, capacity]);
+        fetchCarDetails();
+    }, [id]);
 
 
     if (!isLoading) {
@@ -91,6 +106,7 @@ const CarSearchPage = (props: any) => {
                         </div>
                     </div>
                 </header>
+                {/* options bar */}
                 <div className="flex flex-row">
                     <div className="sm:flex flex-col bg-white w-[22rem] border-t border-gray-100 p-8 gap-y-14 hidden">
                         <div className="flex flex-col">
@@ -222,31 +238,69 @@ const CarSearchPage = (props: any) => {
                             </ul>
                         </div>
                     </div>
-                    <div className="container sm:mx-auto px-2">
+                    {/* car details */}
+                    <div className="container sm:mx-auto px-4 my-8">
+                        <div className={'flex flex-col lg:flex-row px-8 gap-x-4 gap-y-8 items-center justify-between'}>
+                            <div className={'items-center justify-center flex rounded-md'}>
+                                <img src={carDetails?.images[0]} alt="car image"
+                                     className={'bg-blue-400 center rounded-xl  w-full h-[510px]'}/>
+                            </div>
+                            <div
+                                className={'flex flex-col gap-y-14 p-8 lg:p-6 rounded-xl bg-white w-full h-[510px]'}>
+                                <p className={'font-bold text-3xl'}>{carDetails?.name}</p>
+                                <p className={'text-gray-400'}>{carDetails?.description}</p>
+                                <div className={'flex flex-row justify-between'}>
+                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px]'}>
+                                        <p className={'text-gray-400'}>Car Type</p>
+                                        <p className={'text-gray-500 font-bold'}>{carDetails?.type}</p>
+                                    </div>
+                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px]'}>
+                                        <p className={'text-gray-400'}>Capacity</p>
+                                        <p className={'text-gray-500 font-bold'}>{`${carDetails?.capacity} Person`}</p>
+                                    </div>
+                                </div>
+                                <div className={'flex flex-row justify-between'}>
+                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px]'}>
+                                        <p className={'text-gray-400'}>Transmission</p>
+                                        <p className={'text-gray-500 font-bold'}>{carDetails?.transmission}</p>
+                                    </div>
+                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px]'}>
+                                        <p className={'text-gray-400'}>Gasoline</p>
+                                        <p className={'text-gray-500 font-bold'}>{`${carDetails?.fuelCapacity}L`}</p>
+                                    </div>
+                                </div>
+                                <div className={'flex flex-row justify-between items-center'}>
+                                    <p className={'font-bold text-3xl'}>{`${carPriceString?.slice(0, carPriceString?.length - 2)}.${carPriceString?.slice(carPriceString?.length - 2, carPriceString?.length)} / days`}</p>
+                                    <button
+                                        className={'w-[140px] h-[56px] bg-blue-500 text-white font-semibold rounded-md'}
+                                        onClick={() => navigate(`/car/${id}/booking`)}>Rent Now
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        {/* recommended cars*/}
+                        <div className={'flex flex-row w-full items-center justify-between px-8 mt-8'}>
+                            <p className={'text-gray-400'}>Recommended cars</p>
+                            <Link to={'/cars'}>View All</Link>
+                        </div>
                         <div
                             className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 row-auto justify-center sm:justify-between gap-8 p-8">
                             {carList?.map((car, index) => ItemCard(car, index, navigate))}
                         </div>
-                        <div className="flex flex-row items-center justify-center w-full my-16">
-                            <button
-                                className="w-36 h-11 bg-blue-600 text-white rounded-md"
-                                onClick={() => {
-                                    setPage(page + 1);
-                                }}
-                            >
-                                Show More
-                            </button>
-                        </div>
                     </div>
                 </div>
+
                 <div className="bg-white">
                     <footer className="container px-2 sm:mx-auto">
                         <Footer/>
                     </footer>
                 </div>
             </div>
-        );
+        )
     }
-};
 
-export default CarSearchPage;
+
+}
+
+export default CarDetailsPage

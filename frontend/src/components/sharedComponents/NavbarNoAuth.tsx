@@ -22,16 +22,16 @@ const NavbarNoAuth = () => {
               onChange={(e) => setsearchParams(e.target.value)}
               onKeyDown={(e) => {
                 e.key === "Enter" &&
-                  navigate(`/cars&searchParams=${searchParams}`);
+                  navigate(`/cars?searchParams=${searchParams}`);
               }}
             />
             <button
               type="button"
               className="peer-focus:mr-2 z-20 cursor-pointer text-blue-600 outline-none duration-150 hover:scale-125"
-              onClick={(e) =>
+              onClick={() =>
                 searchParams === ""
                   ? navigate("/cars")
-                  : navigate(`/cars&searchParams=${searchParams}`)
+                  : navigate(`/cars?searchParams=${searchParams}`)
               }
             >
               <svg className="h-6 w-6 stroke-2" viewBox="0 0 32 32" fill="none">

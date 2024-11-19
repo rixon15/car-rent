@@ -1,2 +1,2 @@
 Rewrite the billing page, it's a mess atm.
-Complete the auth pages
+Create a layout, move there the navbar and footer. Pass the searchTerm from the navbar to the children so we can access it to querry the database

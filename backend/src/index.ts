@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import conncetToDatabase from "./config/db";
+import connectToDatabase from "./config/db";
 import { APP_ORIGIN, NODE_ENV, PORT } from "./constants/env";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler";
@@ -16,7 +16,7 @@ import carSeeder from "./seeders/car.seeder";
 
 const app = express();
 
-const needSeeding = false;
+const needSeeding = true;
 
 app.use(express.json({ limit: "25mb" }));
 app.use(express.urlencoded({ extended: true, limit: "25mb" }));
@@ -47,12 +47,12 @@ app.use(errorHandler);
 
 app.listen(PORT, async () => {
   try {
-    await conncetToDatabase();
+    await connectToDatabase();
     if(needSeeding) {
       await carSeeder();
     }
-    console.log(`Server is running on port ${PORT} in ${NODE_ENV} enviroment`);
-    console.log("Succesfully connected to the databse");
+    console.log(`Server is running on port ${PORT} in ${NODE_ENV} environment`);
+    console.log("Successfully connected to the database");
   } catch (error) {
     console.log("Error while connecting to the database", error);
   }

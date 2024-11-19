@@ -4,7 +4,7 @@ interface iCar {
   _id: string;
   name: string;
   description: string;
-  image: string;
+  images: string[];
   type: string;
   capacity: number;
   transmission: string;
@@ -25,7 +25,7 @@ const ItemCard = (car: iCar, index: number, navigate: NavigateFunction) => {
     >
       <p className="font-bold text-xl mb-1">{car.name}</p>
       <p className="font-sm text-gray-500 mb-20 font-bold">{car.type}</p>
-      <img src={car.image} alt="ar image" className="w-full self-center mb-9" />
+      <img src={car.images[0]} alt="ar image" className="w-full self-center mb-9" />
       <div className="flex flex-row items-center justify-center mb-6 gap-x-4">
         <div className="flex flex-row items-center justify-between">
           <img src="/gasStation.svg" alt="fuel capacity" className="size-6" />

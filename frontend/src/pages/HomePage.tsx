@@ -11,7 +11,7 @@ interface iCar {
   _id: string;
   name: string;
   description: string;
-  image: string;
+  images: string[];
   type: string;
   capacity: number;
   transmission: string;
@@ -25,7 +25,7 @@ interface iCar {
 
 type iData = iCar[];
 
-const HomePage = (props: any) => {
+const HomePage = (props) => {
   const user = props.user;
   const navigate = useNavigate();
 
