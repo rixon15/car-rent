@@ -5,6 +5,7 @@ import Footer from "../components/sharedComponents/Footer";
 import {useEffect, useState} from "react";
 import API from "../config/apiClient";
 import ItemCard from "../components/ItemCard";
+import UserType from "../types/userType.ts";
 
 interface iCar {
     _id: string;
@@ -35,8 +36,7 @@ const checkCheckbox = (
 
 };
 
-const CarSearchPage = (props: any) => {
-    const user = props.user;
+const CarSearchPage = ({user}: UserType) => {
     const [carList, setCarList] = useState<iData | null>(null);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
@@ -87,7 +87,7 @@ const CarSearchPage = (props: any) => {
                 <header>
                     <div className="bg-white">
                         <div className="container px-2 sm:mx-auto">
-                            {user ? <NavbarAuth/> : <NavbarNoAuth/>}
+                            {user !== null ? <NavbarAuth/> : <NavbarNoAuth/>}
                         </div>
                     </div>
                 </header>

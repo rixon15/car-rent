@@ -10,6 +10,8 @@ import CarSearchPage from "./pages/CarSearchPage";
 import CarDetailsPage from "./pages/CarDetailsPage";
 import {useEffect, useState} from "react";
 import API from "./config/apiClient.ts";
+import UserType from "./types/userType.ts";
+import DashboardPage from "./pages/DashboardPage.tsx";
 
 export const Home = () => {
     return <div>Home Test</div>;
@@ -17,18 +19,19 @@ export const Home = () => {
 
 function App() {
 
-    const [user, setUser] = useState()
+    const [user, setUser] = useState<UserType | null>(null)
 
     useEffect(() => {
         const fetchUser = async () => {
-            const user = await API.get("/user");
-            setUser(user)
+            const userData = await API.get("/user");
+            setUser(userData);
         }
 
         fetchUser()
 
 
     }, []);
+
 
     return (
         <Routes>
@@ -38,11 +41,12 @@ function App() {
             <Route path="/" element={<HomePage user={user}/>}/>
             <Route path="/cars" element={<CarSearchPage user={user}/>}/>
             <Route path="/car/:id" element={<CarDetailsPage user={user}/>}/>
+            <Route path="/:id/dashboard" element={<DashboardPage/>}/>
             {/* <Route path="/car/:id/booking" element={<BookingForm />} />
       <Route path="/payment/:id" element={<CheckoutPage />} /> */}
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
-            <Route path="/email/verify/:code" element={<VerifyEmail />}/>
+            <Route path="/email/verify/:code" element={<VerifyEmail/>}/>
             <Route path="/password/forgot" element={<ForgotPassword/>}/>
             <Route path="/password/reset" element={<ResetPassword/>}/>
         </Routes>

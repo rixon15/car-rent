@@ -5,6 +5,8 @@ import NavbarAuth from "../components/sharedComponents/NavbarAuth.tsx";
 import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth.tsx";
 import Footer from "../components/sharedComponents/Footer.tsx";
 import ItemCard from "../components/ItemCard.tsx";
+import UserType from "../types/userType.ts";
+import {createLogger} from "vite";
 
 interface iCar {
     _id: string;
@@ -35,7 +37,7 @@ const checkCheckbox = (
 
 };
 
-const CarDetailsPage = (props) => {
+const CarDetailsPage = ({user}: UserType) => {
 
     const [carDetails, setCarDetails] = useState<iCar | null>(null)
     const [isLoading, setIsLoading] = useState(true)
@@ -57,10 +59,11 @@ const CarDetailsPage = (props) => {
         person6: false,
         parson8: false,
     });
-    const user = props.user;
 
     const navigate = useNavigate();
 
+
+    console.log(user)
 
     useEffect(() => {
         const fetchCarDetails = async () => {
@@ -102,7 +105,7 @@ const CarDetailsPage = (props) => {
                 <header>
                     <div className="bg-white">
                         <div className="container px-2 sm:mx-auto">
-                            {user ? <NavbarAuth/> : <NavbarNoAuth/>}
+                            {user ? <NavbarAuth user={user}/> : <NavbarNoAuth/>}
                         </div>
                     </div>
                 </header>
@@ -240,39 +243,44 @@ const CarDetailsPage = (props) => {
                     </div>
                     {/* car details */}
                     <div className="container sm:mx-auto px-4 my-8">
-                        <div className={'flex flex-col lg:flex-row px-8 gap-x-4 gap-y-8 items-center justify-between'}>
-                            <div className={'items-center justify-center flex rounded-md'}>
+                        <div className={'flex flex-col lg:flex-row px-8 gap-x-4 gap-y-8 justify-between'}>
+                            <div className={'items-center justify-center flex flex-col rounded-md'}>
                                 <img src={carDetails?.images[0]} alt="car image"
                                      className={'bg-blue-400 center rounded-xl  w-full h-[510px]'}/>
+                                <div className={'flex flex-row items-center justify-evenly pt-6 w-full'}>
+                                    {carDetails?.images.map((image, index) => (
+                                        <img src={image} alt="car image" key={index} className={'size-[124px] bg-blue-500 rounded-xl hidden md:block'}/>
+                                    ))}
+                                </div>
                             </div>
                             <div
-                                className={'flex flex-col gap-y-14 p-8 lg:p-6 rounded-xl bg-white w-full h-[510px]'}>
+                                className={'flex flex-col gap-y-14 p-8 lg:p-6 rounded-xl bg-white w-full min-h-full'}>
                                 <p className={'font-bold text-3xl'}>{carDetails?.name}</p>
                                 <p className={'text-gray-400'}>{carDetails?.description}</p>
-                                <div className={'flex flex-row justify-between'}>
-                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px]'}>
+                                <div className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
+                                    <div className={'flex flex-row gap-x-2 w-full justify-center max-w-[200px]'}>
                                         <p className={'text-gray-400'}>Car Type</p>
                                         <p className={'text-gray-500 font-bold'}>{carDetails?.type}</p>
                                     </div>
-                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px]'}>
+                                    <div className={'flex flex-row gap-x-2 w-full justify-center max-w-[200px]'}>
                                         <p className={'text-gray-400'}>Capacity</p>
                                         <p className={'text-gray-500 font-bold'}>{`${carDetails?.capacity} Person`}</p>
                                     </div>
                                 </div>
-                                <div className={'flex flex-row justify-between'}>
-                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px]'}>
+                                <div className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
+                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px] justify-center'}>
                                         <p className={'text-gray-400'}>Transmission</p>
                                         <p className={'text-gray-500 font-bold'}>{carDetails?.transmission}</p>
                                     </div>
-                                    <div className={'flex flex-row gap-x-2 w-full max-w-[200px]'}>
+                                    <div className={'flex flex-row justify-center md:justify-between max-w-[200px]'}>
                                         <p className={'text-gray-400'}>Gasoline</p>
                                         <p className={'text-gray-500 font-bold'}>{`${carDetails?.fuelCapacity}L`}</p>
                                     </div>
                                 </div>
-                                <div className={'flex flex-row justify-between items-center'}>
-                                    <p className={'font-bold text-3xl'}>{`${carPriceString?.slice(0, carPriceString?.length - 2)}.${carPriceString?.slice(carPriceString?.length - 2, carPriceString?.length)} / days`}</p>
+                                <div className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
+                                    <p className={'font-bold text-3xl text-center'}>{`${carPriceString?.slice(0, carPriceString?.length - 2)}.${carPriceString?.slice(carPriceString?.length - 2, carPriceString?.length)} / days`}</p>
                                     <button
-                                        className={'w-[140px] h-[56px] bg-blue-500 text-white font-semibold rounded-md'}
+                                        className={'w-[140px] h-[56px] bg-blue-500 text-white font-semibold rounded-md self-center'}
                                         onClick={() => navigate(`/car/${id}/booking`)}>Rent Now
                                     </button>
                                 </div>

@@ -5,6 +5,8 @@ import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth";
 import {useEffect, useState} from "react";
 import API from "../config/apiClient";
 import ItemCard from "../components/ItemCard";
+import UserType from "../types/userType.ts";
+
 
 interface iCar {
     _id: string;
@@ -25,15 +27,13 @@ interface iCar {
 type iData = iCar[];
 
 
-const HomePage = (props) => {
+const HomePage = ({user}:UserType) => {
     const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(true);
     const [popularCars, setPopularCars] = useState<iData | null>(null);
     const [carList, setCarList] = useState<iData | null>(null);
     const [page, setPage] = useState(1);
-
-    const user = props.user
 
     useEffect(() => {
         setIsLoading(true);
@@ -70,13 +70,14 @@ const HomePage = (props) => {
         fetchCarList();
     }, [page]);
 
+
     if (!isLoading) {
         return (
             <div className="bg-gray-100 w-full">
                 <header>
                     <div className="bg-white">
                         <div className="container px-2 sm:mx-auto">
-                            {user ? <NavbarAuth/> : <NavbarNoAuth/>}
+                            {user === null ? <NavbarNoAuth/> : <NavbarAuth/>}
                         </div>
                     </div>
                     {/* Hero section */}

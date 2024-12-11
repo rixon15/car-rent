@@ -2,11 +2,11 @@ import { Bell, Heart, Settings } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import UserType from "../../types/userType.ts";
 
 
-const NavbarAuth = (props) => {
+const NavbarAuth = ({user}:UserType) => {
 
-    const user = props.user;
 
   const [searchParams, setsearchParams] = useState("");
   const navigate = useNavigate();
@@ -61,15 +61,6 @@ const NavbarAuth = (props) => {
           </div>
         </div>
         <div className="flex flex-row items-center justify-between gap-x-5">
-          <Link to={`/${user?._id}/likes`}>
-            <Heart className="fill-gray-400 text-gray-400 size-11 border-2 rounded-full p-3" />
-          </Link>
-          <Link to={`/${user?._id}/notificaions`}>
-            <Bell className="fill-gray-400 text-gray-400 size-11 border-2 rounded-full p-3" />
-          </Link>
-          <Link to={`/${user?._id}/settings`}>
-            <Settings className=" text-gray-400 size-11 border-2 rounded-full p-3" />
-          </Link>
           <Link to={`/${user?._id}/dashboard`}>
             {user?.profilePhoto ? (
               <img
