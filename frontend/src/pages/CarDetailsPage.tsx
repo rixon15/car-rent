@@ -35,7 +35,7 @@ const checkCheckbox = (
 
 };
 
-const CarDetailsPage = () => {
+const CarDetailsPage = (props) => {
 
     const [carDetails, setCarDetails] = useState<iCar | null>(null)
     const [isLoading, setIsLoading] = useState(true)
@@ -57,7 +57,7 @@ const CarDetailsPage = () => {
         person6: false,
         parson8: false,
     });
-    const user = false;
+    const user = props.user;
 
     const navigate = useNavigate();
 

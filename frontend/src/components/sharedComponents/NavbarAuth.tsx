@@ -4,8 +4,9 @@ import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 
 
-const NavbarAuth = () => {
-  const { user } = useAuth();
+const NavbarAuth = (props) => {
+
+    const user = props.user;
 
   const [searchParams, setsearchParams] = useState("");
   const navigate = useNavigate();

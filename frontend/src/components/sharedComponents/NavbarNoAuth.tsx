@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const NavbarNoAuth = () => {
+const NavbarNoAuth = (props) => {
   const [searchParams, setsearchParams] = useState("");
   const navigate = useNavigate();
 
