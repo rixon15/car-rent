@@ -5,19 +5,6 @@ interface IresetPassword {
   password: string;
 }
 
-export const login = async (data: { email: string; password: string }) => {
-  return await API.post("/auth/login", data);
-};
-
-export const register = async (data: {
-  email: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
-}) => {
-  await API.post("/auth/register", data);
-};
-
 export const verifyEmail = async (verificationCode: string) => {
   return await API.get(`/auth/email/verify/${verificationCode}`);
 };
@@ -31,8 +18,4 @@ export const resetPassword = async ({
   password,
 }: IresetPassword) => {
   return await API.post("/auth/password/reset", { verificationCode, password });
-};
-
-export const getUser = async () => {
-  return API.get("/user");
 };

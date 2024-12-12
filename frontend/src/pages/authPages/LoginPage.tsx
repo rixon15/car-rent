@@ -2,13 +2,15 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../lib/api.auth";
+import {useAuthStore} from "../../store/authStore.ts";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+
+  const {login} = useAuthStore();
 
   const { mutate: signIn } = useMutation({
     mutationFn: login,

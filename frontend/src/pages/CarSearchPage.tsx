@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import API from "../config/apiClient";
 import ItemCard from "../components/ItemCard";
 import UserType from "../types/userType.ts";
+import {useAuthStore} from "../store/authStore.ts";
 
 interface iCar {
     _id: string;
@@ -36,11 +37,13 @@ const checkCheckbox = (
 
 };
 
-const CarSearchPage = ({user}: UserType) => {
+const CarSearchPage = () => {
     const [carList, setCarList] = useState<iData | null>(null);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
+    const {user} = useAuthStore()
+
     const [carTypes, setCarTypes] = useState({
         sport: true,
         suv: false,
@@ -87,7 +90,7 @@ const CarSearchPage = ({user}: UserType) => {
                 <header>
                     <div className="bg-white">
                         <div className="container px-2 sm:mx-auto">
-                            {user !== null ? <NavbarAuth/> : <NavbarNoAuth/>}
+                            {user ? <NavbarAuth/> : <NavbarNoAuth/>}
                         </div>
                     </div>
                 </header>

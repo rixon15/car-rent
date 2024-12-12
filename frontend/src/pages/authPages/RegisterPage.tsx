@@ -3,6 +3,7 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../lib/api.auth";
+import {useAuthStore} from "../../store/authStore.ts";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -12,8 +13,11 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
+  const {signup} = useAuthStore();
+
+
   const { mutate: createAccount, error} = useMutation({
-    mutationFn: register,
+    mutationFn: signup,
     onSuccess: () => {
       navigate("/", { replace: true });
     },

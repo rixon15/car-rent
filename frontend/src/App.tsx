@@ -8,39 +8,31 @@ import ForgotPassword from "./pages/authPages/ForgotPassword";
 import ResetPassword from "./pages/authPages/ResetPassword";
 import CarSearchPage from "./pages/CarSearchPage";
 import CarDetailsPage from "./pages/CarDetailsPage";
-import {useEffect, useState} from "react";
-import API from "./config/apiClient.ts";
-import UserType from "./types/userType.ts";
+import {useEffect} from "react";
 import DashboardPage from "./pages/DashboardPage.tsx";
+import {useAuthStore} from "./store/authStore.ts";
 
 export const Home = () => {
     return <div>Home Test</div>;
 };
 
+
 function App() {
 
-    const [user, setUser] = useState<UserType | null>(null)
+    const {authCheck} = useAuthStore();
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const userData = await API.get("/user");
-            setUser(userData);
-        }
-
-        fetchUser()
-
-
+        authCheck();
     }, []);
-
 
     return (
         <Routes>
             {/* <Route path="/" element={<AppContainer />}>
         <Route index element={<Home/>}/>
       </Route> */}
-            <Route path="/" element={<HomePage user={user}/>}/>
-            <Route path="/cars" element={<CarSearchPage user={user}/>}/>
-            <Route path="/car/:id" element={<CarDetailsPage user={user}/>}/>
+            <Route path="/" element={<HomePage/>}/>
+            <Route path="/cars" element={<CarSearchPage/>}/>
+            <Route path="/car/:id" element={<CarDetailsPage/>}/>
             <Route path="/:id/dashboard" element={<DashboardPage/>}/>
             {/* <Route path="/car/:id/booking" element={<BookingForm />} />
       <Route path="/payment/:id" element={<CheckoutPage />} /> */}

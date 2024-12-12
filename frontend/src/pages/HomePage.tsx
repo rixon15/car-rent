@@ -5,7 +5,7 @@ import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth";
 import {useEffect, useState} from "react";
 import API from "../config/apiClient";
 import ItemCard from "../components/ItemCard";
-import UserType from "../types/userType.ts";
+import {useAuthStore} from "../store/authStore.ts";
 
 
 interface iCar {
@@ -27,13 +27,17 @@ interface iCar {
 type iData = iCar[];
 
 
-const HomePage = ({user}:UserType) => {
+const HomePage = () => {
     const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(true);
     const [popularCars, setPopularCars] = useState<iData | null>(null);
     const [carList, setCarList] = useState<iData | null>(null);
     const [page, setPage] = useState(1);
+
+    const {user} = useAuthStore()
+
+    console.log(user)
 
     useEffect(() => {
         setIsLoading(true);

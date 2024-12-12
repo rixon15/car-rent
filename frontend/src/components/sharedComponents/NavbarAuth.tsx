@@ -1,15 +1,17 @@
 import { Bell, Heart, Settings } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import UserType from "../../types/userType.ts";
+import {useAuthStore} from "../../store/authStore.ts";
 
 
-const NavbarAuth = ({user}:UserType) => {
-
+const NavbarAuth = () => {
 
   const [searchParams, setsearchParams] = useState("");
   const navigate = useNavigate();
+
+  const {logout, user} = useAuthStore();
+
 
   return (
     <nav className="bg-white">
@@ -74,6 +76,7 @@ const NavbarAuth = ({user}:UserType) => {
               </div>
             )}
           </Link>
+          <p onClick={logout}>Log Out</p>
         </div>
       </div>
     </nav>

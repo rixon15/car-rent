@@ -5,8 +5,7 @@ import NavbarAuth from "../components/sharedComponents/NavbarAuth.tsx";
 import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth.tsx";
 import Footer from "../components/sharedComponents/Footer.tsx";
 import ItemCard from "../components/ItemCard.tsx";
-import UserType from "../types/userType.ts";
-import {createLogger} from "vite";
+import {useAuthStore} from "../store/authStore.ts";
 
 interface iCar {
     _id: string;
@@ -37,7 +36,7 @@ const checkCheckbox = (
 
 };
 
-const CarDetailsPage = ({user}: UserType) => {
+const CarDetailsPage = () => {
 
     const [carDetails, setCarDetails] = useState<iCar | null>(null)
     const [isLoading, setIsLoading] = useState(true)
@@ -62,8 +61,8 @@ const CarDetailsPage = ({user}: UserType) => {
 
     const navigate = useNavigate();
 
+    const {user} = useAuthStore();
 
-    console.log(user)
 
     useEffect(() => {
         const fetchCarDetails = async () => {
@@ -105,7 +104,7 @@ const CarDetailsPage = ({user}: UserType) => {
                 <header>
                     <div className="bg-white">
                         <div className="container px-2 sm:mx-auto">
-                            {user ? <NavbarAuth user={user}/> : <NavbarNoAuth/>}
+                            {user ? <NavbarAuth/> : <NavbarNoAuth/>}
                         </div>
                     </div>
                 </header>
@@ -249,7 +248,8 @@ const CarDetailsPage = ({user}: UserType) => {
                                      className={'bg-blue-400 center rounded-xl  w-full h-[510px]'}/>
                                 <div className={'flex flex-row items-center justify-evenly pt-6 w-full'}>
                                     {carDetails?.images.map((image, index) => (
-                                        <img src={image} alt="car image" key={index} className={'size-[124px] bg-blue-500 rounded-xl hidden md:block'}/>
+                                        <img src={image} alt="car image" key={index}
+                                             className={'size-[124px] bg-blue-500 rounded-xl hidden md:block'}/>
                                     ))}
                                 </div>
                             </div>
@@ -257,7 +257,8 @@ const CarDetailsPage = ({user}: UserType) => {
                                 className={'flex flex-col gap-y-14 p-8 lg:p-6 rounded-xl bg-white w-full min-h-full'}>
                                 <p className={'font-bold text-3xl'}>{carDetails?.name}</p>
                                 <p className={'text-gray-400'}>{carDetails?.description}</p>
-                                <div className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
+                                <div
+                                    className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
                                     <div className={'flex flex-row gap-x-2 w-full justify-center max-w-[200px]'}>
                                         <p className={'text-gray-400'}>Car Type</p>
                                         <p className={'text-gray-500 font-bold'}>{carDetails?.type}</p>
@@ -267,7 +268,8 @@ const CarDetailsPage = ({user}: UserType) => {
                                         <p className={'text-gray-500 font-bold'}>{`${carDetails?.capacity} Person`}</p>
                                     </div>
                                 </div>
-                                <div className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
+                                <div
+                                    className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
                                     <div className={'flex flex-row gap-x-2 w-full max-w-[200px] justify-center'}>
                                         <p className={'text-gray-400'}>Transmission</p>
                                         <p className={'text-gray-500 font-bold'}>{carDetails?.transmission}</p>
@@ -277,7 +279,8 @@ const CarDetailsPage = ({user}: UserType) => {
                                         <p className={'text-gray-500 font-bold'}>{`${carDetails?.fuelCapacity}L`}</p>
                                     </div>
                                 </div>
-                                <div className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
+                                <div
+                                    className={'flex flex-col md:flex-row justify-center md:justify-between gap-y-4 md:gap-y-0'}>
                                     <p className={'font-bold text-3xl text-center'}>{`${carPriceString?.slice(0, carPriceString?.length - 2)}.${carPriceString?.slice(carPriceString?.length - 2, carPriceString?.length)} / days`}</p>
                                     <button
                                         className={'w-[140px] h-[56px] bg-blue-500 text-white font-semibold rounded-md self-center'}
