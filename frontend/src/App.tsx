@@ -11,6 +11,10 @@ import CarDetailsPage from "./pages/CarDetailsPage";
 import {useEffect} from "react";
 import DashboardPage from "./pages/DashboardPage.tsx";
 import {useAuthStore} from "./store/authStore.ts";
+import AppContainer from "./components/AppContainer.tsx";
+import BookingForm from "./pages/BookingPage.tsx";
+import CheckoutPage from "./pages/CheckoutPage.tsx"
+import PaymentSuccessPage from "./pages/PaymentSuccessPage.tsx";
 
 export const Home = () => {
     return <div>Home Test</div>;
@@ -27,15 +31,15 @@ function App() {
 
     return (
         <Routes>
-            {/* <Route path="/" element={<AppContainer />}>
-        <Route index element={<Home/>}/>
-      </Route> */}
             <Route path="/" element={<HomePage/>}/>
             <Route path="/cars" element={<CarSearchPage/>}/>
             <Route path="/car/:id" element={<CarDetailsPage/>}/>
-            <Route path="/:id/dashboard" element={<DashboardPage/>}/>
-            {/* <Route path="/car/:id/booking" element={<BookingForm />} />
-      <Route path="/payment/:id" element={<CheckoutPage />} /> */}
+            <Route path="/:id/dashboard" element={<AppContainer/>}>
+                <Route index element={<DashboardPage/>}/>
+            </Route>
+            <Route path="/car/:id/booking" element={<BookingForm/>}/>
+            <Route path="/payment/:id" element={<CheckoutPage/>}/>
+            <Route path={"/payment/:id/success/return"} element={<PaymentSuccessPage/>} />
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/email/verify/:code" element={<VerifyEmail/>}/>

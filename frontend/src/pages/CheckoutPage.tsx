@@ -6,6 +6,7 @@ import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from "@stripe/react-stripe-js";
+import {useAuthStore} from "../store/authStore.ts";
 // import CheckoutForm from "../components/CheckoutForm"
 
 const stripePromise = loadStripe(

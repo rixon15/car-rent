@@ -41,7 +41,7 @@ export const useAuthStore = create((set) => ({
             set({user: response, isLoggingIn: false});
         } catch (error) {
             set({isLoggingin: false});
-            toast.error(error.message || 'Login failed');
+            toast.error('Login failed');
         }
     },
     logout: async () => {

@@ -5,6 +5,11 @@ interface Ireview {
     text: string;
 }
 
+interface Ibookingref {
+    id: mongoose.Schema.Types.ObjectId
+    ref: 'booking'
+}
+
 interface CarDocument extends mongoose.Document {
     name: string;
     description: string;
@@ -16,6 +21,7 @@ interface CarDocument extends mongoose.Document {
     price: number;
     views: number;
     reviews: Ireview[];
+    bookings: Ibookingref[];
 }
 
 const carSchema = new mongoose.Schema<CarDocument>(
@@ -30,6 +36,7 @@ const carSchema = new mongoose.Schema<CarDocument>(
         price: {type: Number, required: true},
         views: {type: Number, default: 0},
         reviews: Array<Ireview>,
+        bookings: Array<Ibookingref>,
     },
     {
         timestamps: true,
