@@ -55,14 +55,13 @@ export const useAuthStore = create((set) => ({
         }
     },
     authCheck: async () => {
-        set({isCheckingAuth: false});
+        set({isCheckingAuth: true});
         try {
             const response = await API.get("/user");
             set({user: response, isCheckingAuth: false});
         } catch (error) {
             set({isCheckingAuth: false});
         }
-    }
-
+    },
 
 }))

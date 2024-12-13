@@ -6,8 +6,8 @@ interface Ireview {
 }
 
 interface Ibookingref {
-    id: mongoose.Schema.Types.ObjectId
-    ref: 'booking'
+    type: mongoose.Schema.Types.ObjectId
+    ref: 'Booking'
 }
 
 interface CarDocument extends mongoose.Document {

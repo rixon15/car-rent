@@ -1,17 +1,20 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
 import API from "../config/apiClient.ts";
+import {useAuthStore} from "../store/authStore.ts";
 
 const PaymentSuccessPage = () => {
 
     const nav = useNavigate();
     const params = useParams();
 
-    console.log(params.id);
+    const {user} = useAuthStore();
+
+    console.log(user);
 
     useEffect(() => {
         API.post(`booking/${params.id}/confirm`)
-        setTimeout(() => nav('/dashboard'), 5000);
+        setTimeout(() => nav(`/${user.id}/dashboard`), 5000);
     }, [])
 
     return (

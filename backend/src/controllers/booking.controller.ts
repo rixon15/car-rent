@@ -37,6 +37,7 @@ export const createBookingHandler = catchErrors(async (req, res) => {
         $push: {
             bookings: {
                 id: booking._id,
+                ref: 'booking'
             }
         }
     });
@@ -45,6 +46,7 @@ export const createBookingHandler = catchErrors(async (req, res) => {
         $push: {
             bookings: {
                 id: booking._id,
+                ref: 'booking'
             }
         }
     })

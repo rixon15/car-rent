@@ -37,8 +37,6 @@ const HomePage = () => {
 
     const {user} = useAuthStore()
 
-    console.log(user)
-
     useEffect(() => {
         setIsLoading(true);
 

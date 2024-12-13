@@ -35,6 +35,15 @@ interface IcarInfo {
     createdAt: string;
     updatedAt: string;
     __v: number;
+    bookings: object[];
+}
+
+const getUnaviableDates = (bookings: object[], type: string) => {
+    const array = [];
+
+    bookings?.map((booking) => array.push(new Date(booking[type])));
+
+    return array
 }
 
 const handleSubmit = async (
@@ -82,6 +91,7 @@ const BookingForm = () => {
     const {id} = useParams();
     const {user} = useAuthStore();
 
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -101,6 +111,7 @@ const BookingForm = () => {
         fetchCarInfo();
     }, [id]);
 
+
     useEffect(() => {
         setWindowWidth(window.innerWidth);
     }, [windowWidth]);
@@ -118,6 +129,7 @@ const BookingForm = () => {
     });
 
     const carPriceString = carInfo?.price.toString()
+
 
     if (!loading) {
         return (
@@ -225,6 +237,8 @@ const BookingForm = () => {
                                             pickupDate: e as Date,
                                         }))
                                     }
+                                    minDate={new Date()}
+                                    excludeDates={getUnaviableDates(carInfo?.bookings, 'pickupDate')}
                                     className="bg-[#F6F7F9] rounded-lg h-14 pl-8 w-full"
                                     name="pickupDate"
                                     id="pickupDate"
@@ -265,6 +279,8 @@ const BookingForm = () => {
                                             dropoffDate: e as Date,
                                         }))
                                     }
+                                    minDate={new Date()}
+                                    excludeDates={getUnaviableDates(carInfo?.bookings, 'dropoffDate')}
                                     className="bg-[#F6F7F9] rounded-lg h-14 pl-8 w-full"
                                     name="dropoffDate"
                                     id="dropoffDate"

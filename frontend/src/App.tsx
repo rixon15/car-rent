@@ -15,6 +15,7 @@ import AppContainer from "./components/AppContainer.tsx";
 import BookingForm from "./pages/BookingPage.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx"
 import PaymentSuccessPage from "./pages/PaymentSuccessPage.tsx";
+import API from "./config/apiClient.ts";
 
 export const Home = () => {
     return <div>Home Test</div>;
@@ -23,10 +24,15 @@ export const Home = () => {
 
 function App() {
 
-    const {authCheck} = useAuthStore();
+    const {authCheck, refreshToken} = useAuthStore();
 
     useEffect(() => {
-        authCheck();
+        const auth = async () => {
+            await API.get('auth/refresh')
+            await authCheck();
+        }
+
+        auth()
     }, []);
 
     return (
@@ -39,7 +45,7 @@ function App() {
             </Route>
             <Route path="/car/:id/booking" element={<BookingForm/>}/>
             <Route path="/payment/:id" element={<CheckoutPage/>}/>
-            <Route path={"/payment/:id/success/return"} element={<PaymentSuccessPage/>} />
+            <Route path={"/payment/:id/success/return"} element={<PaymentSuccessPage/>}/>
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/email/verify/:code" element={<VerifyEmail/>}/>
