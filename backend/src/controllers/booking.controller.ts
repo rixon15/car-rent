@@ -35,19 +35,13 @@ export const createBookingHandler = catchErrors(async (req, res) => {
     //Add reference to the user that created the booking
     const user = await userModel.findOneAndUpdate({_id: request.userId}, {
         $push: {
-            bookings: {
-                id: booking._id,
-                ref: 'booking'
-            }
+            bookings: booking._id
         }
     });
     //Add reference to the car that has been reserved
     const car = await carModel.findOneAndUpdate({_id: request.carId}, {
         $push: {
-            bookings: {
-                id: booking._id,
-                ref: 'booking'
-            }
+            bookings: booking._id
         }
     })
     //return the booking
@@ -73,7 +67,6 @@ export const deleteBookingHandler = catchErrors(async (req, res) => {
 export const confirmBookingHandler = catchErrors(async (req, res) => {
     const id = req.params.id;
 
-    console.log(req.params.id)
     const bookingToConfirm = await bookingModel.findOneAndUpdate({carId: id}, {
         verified: true,
     })
@@ -81,3 +74,5 @@ export const confirmBookingHandler = catchErrors(async (req, res) => {
 
     return res.status(OK).json(bookingToConfirm);
 })
+
+

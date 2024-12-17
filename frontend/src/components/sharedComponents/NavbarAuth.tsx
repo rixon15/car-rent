@@ -76,7 +76,7 @@ const NavbarAuth = () => {
               </div>
             )}
           </Link>
-          <p onClick={logout}>Log Out</p>
+          <p className="hidden lg:block" onClick={logout}>Log Out</p>
         </div>
       </div>
     </nav>

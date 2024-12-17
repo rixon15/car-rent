@@ -15,11 +15,11 @@ const cars = {
     views: 50,
     reviews: [
         {
-            userName: 'testUser1',
+            userName: 'Alex Stanton',
             text: 'We are very happy with the service from the MORENT App. Morent has a low price and also a large variety of cars with good and comfortable facilities. In addition, the service provided by the officers is also very friendly and very polite.'
         },
         {
-            userName: 'testUser2',
+            userName: 'Skylar Dias',
             text: 'We are greatly helped by the services of the MORENT Application. Morent has low prices and also a wide variety of cars with good and comfortable facilities. In addition, the service provided by the officers is also very friendly and very polite.'
         }
     ]

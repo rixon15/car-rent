@@ -1,5 +1,9 @@
 import { Router } from "express";
-import {confirmBookingHandler, createBookingHandler, deleteBookingHandler} from "../controllers/booking.controller";
+import {
+    confirmBookingHandler,
+    createBookingHandler,
+    deleteBookingHandler,
+} from "../controllers/booking.controller";
 
 const bookingRoutes = Router();
 //prefix /booking

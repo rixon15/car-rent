@@ -63,6 +63,7 @@ export const getCarHandler = catchErrors(async (req, res) => {
         path: 'bookings',
         model: 'Booking',
     }).exec();
+
     appAssert(car, NOT_FOUND, "Car not found in the database");
 
     //return the car

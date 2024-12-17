@@ -14,7 +14,7 @@ const PaymentSuccessPage = () => {
 
     useEffect(() => {
         API.post(`booking/${params.id}/confirm`)
-        setTimeout(() => nav(`/${user.id}/dashboard`), 5000);
+        setTimeout(() => nav(`/${user._id}/dashboard`), 5000);
     }, [])
 
     return (
@@ -33,7 +33,7 @@ const PaymentSuccessPage = () => {
                     <span className="text-gray-700">The payment was successfull!</span>
                 </p>
                 <p className="text-sm text-gray-600">You will be redirected in 5 seconds</p>
-                <Link to={'/dashboard'} className="text-sm text-gray-600 flex items-center justify-center">Return</Link>
+                <Link to={`${user?._id}/dashboard`} replace className="text-sm text-gray-600 flex items-center justify-center">Return</Link>
             </div>
         </div>
     )

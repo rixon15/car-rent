@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { register } from "../../lib/api.auth";
 import {useAuthStore} from "../../store/authStore.ts";
 
@@ -134,6 +134,9 @@ const RegisterPage = () => {
                 </p>
               </div>
             </label>
+          </div>
+          <div className="flex flex-row  text-sm font-bold text-blue-500 ">
+            <Link to={'/'}>Home</Link>
           </div>
           <div className="flex items-center">
             <div className="flex-1"></div>

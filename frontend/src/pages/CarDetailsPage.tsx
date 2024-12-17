@@ -6,6 +6,7 @@ import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth.tsx";
 import Footer from "../components/sharedComponents/Footer.tsx";
 import ItemCard from "../components/ItemCard.tsx";
 import {useAuthStore} from "../store/authStore.ts";
+import ReviewCard from "../components/sharedComponents/ReviewCard.tsx";
 
 interface iCar {
     _id: string;
@@ -21,6 +22,7 @@ interface iCar {
     createdAt: Date;
     updatedAt: Date;
     __v: number;
+    reviews: Array<object>;
 }
 
 type iData = iCar[];
@@ -43,6 +45,7 @@ const CarDetailsPage = () => {
     const id = useParams().id;
     const carPriceString = carDetails?.price.toString();
     const [carList, setCarList] = useState<iData | null>(null);
+    const [numberOfReviewsToShow, setNumberOfReviewsToShow] = useState(2)
     const [carTypes, setCarTypes] = useState({
         sport: true,
         suv: false,
@@ -290,6 +293,21 @@ const CarDetailsPage = () => {
                             </div>
 
                         </div>
+                        {/*Reviews*/}
+                        <div className="w-full px-8 py-8">
+                            <div className="flex flex-col bg-white p-6">
+                                <div className="flex flex-row gap-x-3 mb-8">
+                                    <p className="font-semibold text-xl">Reviews</p>
+                                    <p className="flex items-center justify-center text-white bg-blue-500 text-xl w-[44px] h-[28px] rounded-md">{carDetails?.reviews.length}</p>
+                                </div>
+                                <div className="flex flex-col gap-y-6">
+                                    {carDetails?.reviews.slice(0,numberOfReviewsToShow).map((review) => (ReviewCard(review)))}
+                                </div>
+                                <div className="flex flex-row justify-center items-center mt-8">
+                                    <p className="font-semibold cursor-pointer text-gray-300" onClick={(e) => {setNumberOfReviewsToShow(numberOfReviewsToShow + 5)}}>Show More V</p>
+                                </div>
+                            </div>
+                        </div>
                         {/* recommended cars*/}
                         <div className={'flex flex-row w-full items-center justify-between px-8 mt-8'}>
                             <p className={'text-gray-400'}>Recommended cars</p>
@@ -297,7 +315,7 @@ const CarDetailsPage = () => {
                         </div>
                         <div
                             className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 row-auto justify-center sm:justify-between gap-8 p-8">
-                            {carList?.map((car, index) => ItemCard(car, index, navigate))}
+                            {carList?.slice(0, 6).map((car, index) => ItemCard(car, index, navigate))}
                         </div>
                     </div>
                 </div>

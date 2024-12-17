@@ -80,8 +80,9 @@ const LoginPage = () => {
                             }
                         />
                     </div>
-                    <div className="flex items-center justify-end text-sm font-bold text-blue-500 mb-6">
+                    <div className="flex flex-row-reverse items-center justify-between text-sm font-bold text-blue-500 mb-6">
                         <Link to={"/passwordReset"}>Forgot password?</Link>
+                        <Link to={"/"}>Home</Link>
                     </div>
                     <div className="flex items-center">
                         <div className="flex-1"></div>
