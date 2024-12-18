@@ -1,16 +1,10 @@
-import {useAuthStore} from "../../store/authStore.ts";
-import {Link} from "react-router-dom";
+const BookingCard = (carData, user,index, nav) => {
 
-const BookingCard = (carData, user,index) => {
-
-    console.log(carData.bookings.filter((booking) => booking.userId === user._id)[0].createdAt)
 
     return (
-        <div className="w-full flex flex-row bg-white rounded-xl" key={index}>
+        <div className="w-full flex flex-row bg-white rounded-xl cursor-pointer" key={index} onClick={() => {nav(`/car/${carData._id}`)}}>
             <div className="flex items-center justify-center pr-4">
-                <Link to={`/car/${carData._id}`}>
                     <img src={`${carData.images[0]}`} alt="Car image" className="bg-blue-500 size-32 rounded-xl"/>
-                </Link>
             </div>
             <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex flex-col w-full justify-center gap-y-4">

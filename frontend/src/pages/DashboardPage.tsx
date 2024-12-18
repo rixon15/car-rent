@@ -1,11 +1,12 @@
 import {useAuthStore} from "../store/authStore.ts";
 import NavbarAuth from "../components/sharedComponents/NavbarAuth.tsx";
 import Footer from "../components/sharedComponents/Footer.tsx";
-import React, {useState} from "react";
+import {useState} from "react";
 import DashboardAdminMenu from "../components/DashboardAdminMenu.tsx";
 import DashboardMenu from "../components/DashboardMenu.tsx";
 import Dashboard from "../components/DashboardComponents/Dashboard.tsx";
 import RentedCars from "../components/DashboardComponents/RentedCars.tsx";
+import UserSettings from "../components/DashboardComponents/UserSettings.tsx";
 
 const renderSwitch = (tab: number, user) => {
     switch (tab) {
@@ -14,6 +15,11 @@ const renderSwitch = (tab: number, user) => {
             break;
         case 1:
             return (<RentedCars user={user}/>)
+            break
+        case 2:
+            return (<UserSettings user={user}/>)
+            break;
+
     }
 }
 

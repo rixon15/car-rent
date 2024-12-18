@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import API from "../../config/apiClient.ts";
 import BookingCard from "./BookingCard";
+import {useNavigate} from "react-router-dom";
 
 const fetchCars = async (bookings) => {
 
@@ -23,6 +24,8 @@ const RentedCars = (props) => {
     const [user, setUser] = useState(null)
     const [carList, setCarList] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+
+    const nav = useNavigate();
 
     useEffect(() => {
         setIsLoading(true);
@@ -58,7 +61,7 @@ const RentedCars = (props) => {
 
         return (
             <div className="w-full flex flex-col bg-gray-300 justify-start items-center pt-12 px-6 pb-12 gap-y-4">
-                {carList.map((carData, index) => {return BookingCard(carData, user, index)})}
+                {carList.map((carData, index) => {return BookingCard(carData, user, index, nav)})}
             </div>
         )
     }
