@@ -10,17 +10,17 @@ const DashboardMenu = (props) => {
 
     return (
         <ul className={'space-y-8'}>
-            <li className={`p-4 font-semibold ${tab === 0 ? 'bg-blue-500 text-white' : 'text-gray-500'} rounded-xl`}>
+            <li className={`p-4 font-semibold ${tab === 0 ? 'bg-blue-500 text-white' : 'text-gray-500'} rounded-xl lg:text-start text-center`}>
                 <p className={`cursor-pointer`} onClick={() => setTab(0)}>Dashboard</p>
             </li>
-            <li className={`p-4 font-semibold ${tab === 1 ? 'bg-blue-500 text-white' : 'text-gray-500'} rounded-xl`}>
+            <li className={`p-4 font-semibold ${tab === 1 ? 'bg-blue-500 text-white' : 'text-gray-500'} rounded-xl lg:text-start text-center`}>
                 <p className={'cursor-pointer'} onClick={() => setTab(1)}>Rented Cars</p>
             </li>
-            <li className={`p-4 font-semibold ${tab === 2 ? 'bg-blue-500 text-white' : 'text-gray-500'} rounded-xl`}>
+            <li className={`p-4 font-semibold ${tab === 2 ? 'bg-blue-500 text-white' : 'text-gray-500'} rounded-xl lg:text-start text-center`}>
                 <p className={'cursor-pointer'} onClick={() => setTab(2)}>Settings</p>
             </li>
             <li className={'p-4'}>
-                <p className={'text-gray-500 cursor-pointer font-semibold'} onClick={logout}>Logout</p>
+                <p className={'text-gray-500 cursor-pointer font-semibold lg:text-start text-center'} onClick={logout}>Logout</p>
             </li>
         </ul>
     )

@@ -1,23 +1,6 @@
 import {useEffect, useState} from "react";
 import API from "../../config/apiClient.ts";
-
-// const fetchBookings = async (arrayOfBookings, userid) => {
-//     try {
-//         const result = await Promise.all(
-//             arrayOfBookings.map(async (booking) => {
-//                 const response = await API.get(`/booking/${userid}`);
-//                 if(!response?.ok) {
-//                     throw new Error("Booking not found");
-//                 }
-//                 return response;
-//             })
-//         );
-//         return result;
-//     } catch (error) {
-//         console.error(error);
-//         return null;
-//     }
-// }
+import BookingCard from "./BookingCard";
 
 const fetchCars = async (bookings) => {
 
@@ -40,27 +23,6 @@ const RentedCars = (props) => {
     const [user, setUser] = useState(null)
     const [carList, setCarList] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
-
-    // useEffect(() => {
-    //
-    //     setIsLoading(true)
-    //
-    //     const fetchData = async () => {
-    //         const bookingsResult = await API.get(`/booking/${user._id}`)
-    //         setBookings(bookingsResult);
-    //         const carsResult = await fetchCars(bookingsResult);
-    //         setCarList(carsResult)
-    //         setIsLoading(false)
-    //     }
-    //
-    //
-    //     fetchData()
-    //
-    // }, []);
-    //
-    //
-    // console.log(bookings);
-    // console.log(carList);
 
     useEffect(() => {
         setIsLoading(true);
@@ -95,8 +57,8 @@ const RentedCars = (props) => {
         console.log(carList)
 
         return (
-            <div className="w-full flex flex-col bg-gray-300 justify-start items-center pt-12">
-
+            <div className="w-full flex flex-col bg-gray-300 justify-start items-center pt-12 px-6 pb-12 gap-y-4">
+                {carList.map((carData, index) => {return BookingCard(carData, user, index)})}
             </div>
         )
     }

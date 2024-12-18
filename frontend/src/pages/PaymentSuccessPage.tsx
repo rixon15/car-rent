@@ -33,7 +33,7 @@ const PaymentSuccessPage = () => {
                     <span className="text-gray-700">The payment was successfull!</span>
                 </p>
                 <p className="text-sm text-gray-600">You will be redirected in 5 seconds</p>
-                <Link to={`${user?._id}/dashboard`} replace className="text-sm text-gray-600 flex items-center justify-center">Return</Link>
+                <Link to={`/${user?._id}/dashboard`} replace className="text-sm text-gray-600 flex items-center justify-center">Return</Link>
             </div>
         </div>
     )
