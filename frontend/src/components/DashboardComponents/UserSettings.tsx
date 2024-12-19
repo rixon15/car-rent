@@ -12,8 +12,6 @@ const UserSettings = (props) => {
 
     const user = props.user;
 
-    console.log(user.email)
-
     const {mutate: sendPasswordReset, error} = useMutation({
         mutationFn: handlePasswordReset,
         onError: () => {

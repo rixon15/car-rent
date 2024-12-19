@@ -15,6 +15,7 @@ export const uploadImage = async (image: string) => {
     resoruce_type: "auto",
   };
 
+
   const uploadResult = await cloudinary.uploader
     .upload(image, opts)
     .catch((error) => {

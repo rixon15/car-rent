@@ -17,7 +17,6 @@ carRoutes.post("/create", createCarHandler);
 carRoutes.get("/popular", getPopularCarsHandler);
 carRoutes.get("/list", getListOfCarsHandler);
 carRoutes.get("/search", searchCarHandler);
-// carRoutes.post("/:id/booking", bookCarHandler);
 carRoutes.get("/:id", getCarHandler);
 carRoutes.delete("/:id", deleteCarHandler);
 

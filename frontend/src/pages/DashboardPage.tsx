@@ -7,6 +7,7 @@ import DashboardMenu from "../components/DashboardMenu.tsx";
 import Dashboard from "../components/DashboardComponents/Dashboard.tsx";
 import RentedCars from "../components/DashboardComponents/RentedCars.tsx";
 import UserSettings from "../components/DashboardComponents/UserSettings.tsx";
+import AddCars from "../components/DashboardComponents/AddCars.tsx";
 
 const renderSwitch = (tab: number, user) => {
     switch (tab) {
@@ -19,7 +20,9 @@ const renderSwitch = (tab: number, user) => {
         case 2:
             return (<UserSettings user={user}/>)
             break;
-
+        case 3:
+            return (<AddCars user={user}/>)
+            break
     }
 }
 
@@ -37,7 +40,7 @@ const DashboardPage = () => {
                     </div>
                 </div>
             </header>
-            <div className="flex flex-col lg:flex-row 2xl:justify-center 2xl:max-w-screen-2xl h-full mx-auto">
+            <div className="flex flex-col lg:flex-row 2xl:justify-center h-full mx-auto">
                 {/*Sidebar*/}
                 <div className="flex flex-col  bg-white border-gray-200 w-full lg:w-[240px] p-8 border-t">
                     <ul>

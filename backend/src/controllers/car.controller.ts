@@ -37,14 +37,15 @@ const carSchema = z.object({
 export const createCarHandler = catchErrors(async (req, res) => {
     //validate request
     const request = carSchema.parse({...req.body});
-    const imageUrls: string[] = [];
-    //call the upload image service
-    // const imgUrl = await uploadImage(request.image);
-    request.images.forEach(async (image) => {
-        await uploadImage(image).then((url) => imageUrls.push(url as string));
-    })
+
+    const imagePromises = request.images.map(image => uploadImage(image));
+    const imageUrls = await Promise.all(imagePromises);
+
+
+    console.log(imageUrls);
     //set the image path
-    request.images = imageUrls;
+    // request.images = imageUrls;
+    request.images = imageUrls as string[];
     //call service
     const car = await createCar(request);
     //error handling
@@ -52,6 +53,7 @@ export const createCarHandler = catchErrors(async (req, res) => {
     //return response
 
     return res.status(CREATED).json(car);
+
 });
 
 export const getCarHandler = catchErrors(async (req, res) => {
