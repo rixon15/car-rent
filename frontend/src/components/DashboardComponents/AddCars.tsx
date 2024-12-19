@@ -99,8 +99,8 @@ const AddCars = (props) => {
                 </div>
                 <div className="flex flex-row gap-x-3 w-full">
                     <label htmlFor="price" className="min-w-[100px]">Price: </label>
-                    <input type="number" id="price" min={0} className="price w-full text-center"
-                           onChange={(e) => handleChange(e.target.value, 'price', setCarDetails)}/>
+                    <input type="number" id="price" min={10} className="price w-full text-center"
+                           onChange={(e) => handleChange(`${e.target.value}00`, 'price', setCarDetails)}/>
                 </div>
             </div>
             <form className="flex flex-col items-center justify-center lg:justify-start gap-y-4">
@@ -109,13 +109,13 @@ const AddCars = (props) => {
                        onInput={async (e) => {
                            addImage(await handleUpload(e.target.files[0], imageArray) as string, setCarDetails);
                        }}/>
-                <label htmlFor="interiorImage1" className="font-bold text-black text-xl">Cover Photo:</label>
+                <label htmlFor="interiorImage1" className="font-bold text-black text-xl">Interior Image 1:</label>
                 <input type="file" id="interiorImage1" name="interiorImage1" alt="interiorImage1"
                        accept="image/png, image/jpeg" onInput={async (e) => {
                     await addImage(await handleUpload(e.target.files[0], imageArray) as string, setCarDetails);
 
                 }}/>
-                <label htmlFor="interiorImage2" className="font-bold text-black text-xl">Cover Photo:</label>
+                <label htmlFor="interiorImage2" className="font-bold text-black text-xl">Interior Image 2:</label>
                 <input type="file" id="interiorImage2" name="interiorImage2" alt="interiorImage2"
                        accept="image/png, image/jpeg" onInput={async (e) => {
                     await addImage(await handleUpload(e.target.files[0], imageArray) as string, setCarDetails);

@@ -8,6 +8,8 @@ import Dashboard from "../components/DashboardComponents/Dashboard.tsx";
 import RentedCars from "../components/DashboardComponents/RentedCars.tsx";
 import UserSettings from "../components/DashboardComponents/UserSettings.tsx";
 import AddCars from "../components/DashboardComponents/AddCars.tsx";
+import AllCars from "../components/DashboardComponents/AllCars.tsx";
+import Reservations from "../components/DashboardComponents/Reservations.tsx";
 
 const renderSwitch = (tab: number, user) => {
     switch (tab) {
@@ -21,8 +23,14 @@ const renderSwitch = (tab: number, user) => {
             return (<UserSettings user={user}/>)
             break;
         case 3:
-            return (<AddCars user={user}/>)
+            return (<AddCars/>)
             break
+        case 4:
+            return (<AllCars/>)
+            break;
+        case 5:
+            return (<Reservations/>)
+            break;
     }
 }
 
