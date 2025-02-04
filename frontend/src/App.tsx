@@ -24,8 +24,8 @@ export const Home = () => {
 
 function App() {
 
-    const {authCheck} = useAuthStore();
-    const [isLoading, setIsLoading] = useState(true)
+    const {authCheck, user} = useAuthStore();
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         setIsLoading(true)
@@ -35,8 +35,14 @@ function App() {
             setIsLoading(false)
         }
 
-        auth()
+        if (user !== null) {
+            auth()
+        }
+
+        setIsLoading(false)
     }, []);
+
+    console.log(user);
 
     if (!isLoading) {
         return (

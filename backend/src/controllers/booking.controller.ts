@@ -75,4 +75,10 @@ export const confirmBookingHandler = catchErrors(async (req, res) => {
     return res.status(OK).json(bookingToConfirm);
 })
 
+export const getBookingsHandler = catchErrors(async (req, res) => {
+    const reservations = await bookingModel.find();
+
+    return res.status(OK).json(reservations);
+})
+
 

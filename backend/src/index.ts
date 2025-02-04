@@ -40,8 +40,8 @@ app.use("/car", carRoutes);
 //protected routes
 app.use("/user", authenticate, userRoutes);
 app.use("/sessions", authenticate, sessionRoutes);
-app.use("/payment", paymentRoutes);
-app.use("/booking", bookingRoutes);
+app.use("/payment", authenticate, paymentRoutes);
+app.use("/booking", authenticate, bookingRoutes);
 
 app.use(errorHandler);
 
