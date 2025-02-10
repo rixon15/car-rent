@@ -23,8 +23,8 @@ app.use(express.json({limit: "25mb"}));
 app.use(express.urlencoded({extended: true, limit: "25mb"}));
 
 const allowedOrigins = [
-    "", // Replace with your actual Vercel URL
-    "http://localhost:4173", // For local development
+    "https://rocky-caverns-97508-c524e4758964.herokuapp.com/", // Replace with your actual  URL
+    "http://localhost:5173", // For local development
     // Add other allowed origins as needed
 ];
 
