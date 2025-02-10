@@ -66,11 +66,11 @@ app.use("/booking", authenticate, bookingRoutes);
 app.use(errorHandler);
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // The "catchall" handler to send back index.html on all unmatched requests:
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(PORT, async () => {
