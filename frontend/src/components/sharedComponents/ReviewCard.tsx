@@ -4,13 +4,14 @@ interface Ireview {
 }
 
 
-const ReviewCard = (review:Ireview) => {
+const ReviewCard = (review: Ireview, index: number) => {
 
 
     return (
-        <div className="flex flex-row w-full gap-x-4">
+        <div className="flex flex-row w-full gap-x-4" key={index}>
             <div>
-                <div className="size-14 bg-blue-400 rounded-full flex items-center justify-center uppercase font-bold">{review?.userName.slice(0, 1)}</div>
+                <div
+                    className="size-14 bg-blue-400 rounded-full flex items-center justify-center uppercase font-bold">{review?.userName.slice(0, 1)}</div>
             </div>
             <div className="flex flex-col gap-y-4">
                 <p className="font-bold text-xl">{review?.userName}</p>

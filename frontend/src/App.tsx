@@ -17,10 +17,6 @@ import CheckoutPage from "./pages/CheckoutPage.tsx"
 import PaymentSuccessPage from "./pages/PaymentSuccessPage.tsx";
 import API from "./config/apiClient.ts";
 
-export const Home = () => {
-    return <div>Home Test</div>;
-};
-
 
 function App() {
 
@@ -41,8 +37,6 @@ function App() {
 
         setIsLoading(false)
     }, []);
-
-    console.log(user);
 
     if (!isLoading) {
         return (

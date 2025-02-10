@@ -46,18 +46,18 @@ const CarSearchPage = () => {
 
     const [carTypes, setCarTypes] = useState({
         sport: true,
-        suv: false,
-        mpv: false,
-        sedan: false,
-        coupe: false,
-        hatchback: false,
+        suv: true,
+        mpv: true,
+        sedan: true,
+        coupe: true,
+        hatchback: true,
     });
 
     const [capacity, setCapacity] = useState({
         person2: true,
-        person4: false,
-        person6: false,
-        parson8: false,
+        person4: true,
+        person6: true,
+        parson8: true,
     });
 
     const navigate = useNavigate();
@@ -85,6 +85,7 @@ const CarSearchPage = () => {
 
 
     if (!isLoading) {
+
         return (
             <div className="bg-gray-100 w-full">
                 <header>
@@ -116,6 +117,7 @@ const CarSearchPage = () => {
                                         type="checkbox"
                                         name="suv"
                                         id="suv"
+                                        defaultChecked
                                         onChange={(e) =>
                                             checkCheckbox(e.target, carTypes, setCarTypes)
                                         }
@@ -129,6 +131,7 @@ const CarSearchPage = () => {
                                         type="checkbox"
                                         name="mpv"
                                         id="mpv"
+                                        defaultChecked
                                         onChange={(e) =>
                                             checkCheckbox(e.target, carTypes, setCarTypes)
                                         }
@@ -142,6 +145,7 @@ const CarSearchPage = () => {
                                         type="checkbox"
                                         name="sedan"
                                         id="sedan"
+                                        defaultChecked
                                         onChange={(e) =>
                                             checkCheckbox(e.target, carTypes, setCarTypes)
                                         }
@@ -153,6 +157,7 @@ const CarSearchPage = () => {
                                         type="checkbox"
                                         name="coupe"
                                         id="coupe"
+                                        defaultChecked
                                         onChange={(e) =>
                                             checkCheckbox(e.target, carTypes, setCarTypes)
                                         }
@@ -164,6 +169,7 @@ const CarSearchPage = () => {
                                         type="checkbox"
                                         name="hatchback"
                                         id="hatchback"
+                                        defaultChecked
                                         onChange={(e) =>
                                             checkCheckbox(e.target, carTypes, setCarTypes)
                                         }
@@ -194,6 +200,7 @@ const CarSearchPage = () => {
                                         type="checkbox"
                                         name="person4"
                                         id="person4"
+                                        defaultChecked
                                         onChange={(e) =>
                                             checkCheckbox(e.target, capacity, setCapacity)
                                         }
@@ -205,6 +212,7 @@ const CarSearchPage = () => {
                                         type="checkbox"
                                         name="person6"
                                         id="person6"
+                                        defaultChecked
                                         onChange={(e) =>
                                             checkCheckbox(e.target, capacity, setCapacity)
                                         }
@@ -216,6 +224,7 @@ const CarSearchPage = () => {
                                         type="checkbox"
                                         name="person8"
                                         id="person8"
+                                        defaultChecked
                                         onChange={(e) =>
                                             checkCheckbox(e.target, capacity, setCapacity)
                                         }

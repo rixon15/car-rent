@@ -38,9 +38,14 @@ const checkCheckbox = (
 
 };
 
+const handleImageSwitch = (index: number, carDetails: object) => {
+    return carDetails?.images[index]
+}
+
 const CarDetailsPage = () => {
 
     const [carDetails, setCarDetails] = useState<iCar | null>(null)
+    const [imageIndex, setImageIndex] = useState(0)
     const [isLoading, setIsLoading] = useState(true)
     const id = useParams().id;
     const carPriceString = carDetails?.price.toString();
@@ -247,12 +252,16 @@ const CarDetailsPage = () => {
                     <div className="container sm:mx-auto px-4 my-8">
                         <div className={'flex flex-col lg:flex-row px-8 gap-x-4 gap-y-8 justify-between'}>
                             <div className={'items-center justify-center flex flex-col rounded-md'}>
-                                <img src={carDetails?.images[0]} alt="car image"
-                                     className={'bg-blue-400 center rounded-xl  w-full h-[510px]'}/>
+                                <img src={handleImageSwitch(imageIndex, carDetails)} alt="car image"
+                                     className={'bg-blue-400 center rounded-xl  w-full min-w-[63    0px] h-[510px]'}/>
                                 <div className={'flex flex-row items-center justify-evenly pt-6 w-full'}>
                                     {carDetails?.images.map((image, index) => (
                                         <img src={image} alt="car image" key={index}
-                                             className={'size-[124px] bg-blue-500 rounded-xl hidden md:block'}/>
+                                             className={'size-[124px] bg-blue-500 rounded-xl hidden md:block'}
+                                             onClick={() => {
+                                                 setImageIndex(index)
+                                             }}
+                                        />
                                     ))}
                                 </div>
                             </div>
@@ -277,7 +286,7 @@ const CarDetailsPage = () => {
                                         <p className={'text-gray-400'}>Transmission</p>
                                         <p className={'text-gray-500 font-bold'}>{carDetails?.transmission}</p>
                                     </div>
-                                    <div className={'flex flex-row justify-center md:justify-between max-w-[200px]'}>
+                                    <div className={'flex flex-row justify-center md:justify-between max-w-[200px] gap-x-2'}>
                                         <p className={'text-gray-400'}>Gasoline</p>
                                         <p className={'text-gray-500 font-bold'}>{`${carDetails?.fuelCapacity}L`}</p>
                                     </div>
@@ -301,10 +310,12 @@ const CarDetailsPage = () => {
                                     <p className="flex items-center justify-center text-white bg-blue-500 text-xl w-[44px] h-[28px] rounded-md">{carDetails?.reviews.length}</p>
                                 </div>
                                 <div className="flex flex-col gap-y-6">
-                                    {carDetails?.reviews.slice(0,numberOfReviewsToShow).map((review) => (ReviewCard(review)))}
+                                    {carDetails?.reviews.slice(0, numberOfReviewsToShow).map((review, index) => (ReviewCard(review, index)))}
                                 </div>
                                 <div className="flex flex-row justify-center items-center mt-8">
-                                    <p className="font-semibold cursor-pointer text-gray-300" onClick={(e) => {setNumberOfReviewsToShow(numberOfReviewsToShow + 5)}}>Show More V</p>
+                                    <p className="font-semibold cursor-pointer text-gray-300" onClick={(e) => {
+                                        setNumberOfReviewsToShow(numberOfReviewsToShow + 5)
+                                    }}>Show More V</p>
                                 </div>
                             </div>
                         </div>

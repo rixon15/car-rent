@@ -155,7 +155,7 @@ const BookingForm = () => {
                                     <p className="text-sm">Please enter your billing info</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm">Step 1 of 4</p>
+                                    <p className="text-sm">Step 1 of 3</p>
                                 </div>
                             </div>
                             <form className="grid grid-cols-1 sm:grid-cols-2 mt-6 gap-y-5 sm:gap-y-0">
@@ -230,7 +230,7 @@ const BookingForm = () => {
                                     <p className="text-sm">Please select your rental date</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm">Step 2 of 4</p>
+                                    <p className="text-sm">Step 2 of 3</p>
                                 </div>
                             </div>
                             {/* Pickup */}
@@ -330,7 +330,7 @@ const BookingForm = () => {
                                         </p>
                                     </div>
                                     <div>
-                                        <p className="text-sm">Step 4 of 4</p>
+                                        <p className="text-sm">Step 3 of 3</p>
                                     </div>
                                 </div>
                                 <form className="grid grid-cols-1 mt-6 gap-y-6">

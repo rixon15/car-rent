@@ -11,7 +11,10 @@ import AddCars from "../components/DashboardComponents/AddCars.tsx";
 import AllCars from "../components/DashboardComponents/AllCars.tsx";
 import Reservations from "../components/DashboardComponents/Reservations.tsx";
 
-const renderSwitch = (tab: number, user) => {
+const renderSwitch = (tab: number, user: object) => {
+
+    console.log(user);
+
     switch (tab) {
         case 0:
             return (<Dashboard/>);
