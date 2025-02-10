@@ -28,21 +28,26 @@ const allowedOrigins = [
     // Add other allowed origins as needed
 ];
 
-app.use(
-    cors({
-        origin: function (origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) { // Allow requests without origin (like Postman) or from allowed origins
-                callback(null, true);
-            } else {
-                callback(new Error("Not allowed by CORS"));
-            }
-        },
-        credentials: true, // Only if you're using cookies
-    })
-);
+// app.use(
+//     cors({
+//         origin: function (origin, callback) {
+//             if (!origin || allowedOrigins.includes(origin)) { // Allow requests without origin (like Postman) or from allowed origins
+//                 callback(null, true);
+//             } else {
+//                 callback(new Error("Not allowed by CORS"));
+//             }
+//         },
+//         credentials: true, // Only if you're using cookies
+//     })
+// );
 
-// app.use(cors());
+app.use(cors());
 app.use(cookieParser());
+
+const port = process.env.PORT || 5000; // Use Heroku's PORT or 5000 locally
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
 
 app.get("/health", (req, res, next) => {
     return res.status(200).json({status: "healthy"});
@@ -60,6 +65,13 @@ app.use("/booking", authenticate, bookingRoutes);
 
 app.use(errorHandler);
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'build')));
+
+// The "catchall" handler to send back index.html on all unmatched requests:
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.listen(PORT, async () => {
     try {
@@ -67,7 +79,7 @@ app.listen(PORT, async () => {
         if (needSeeding) {
             await carSeeder();
         }
-        console.log(`Server is running on port ${PORT} in ${NODE_ENV} environment`);
+        console.log(`Server is running on port ${port} in ${NODE_ENV} environment`);
         console.log("Successfully connected to the database");
     } catch (error) {
         console.log("Error while connecting to the database", error);
