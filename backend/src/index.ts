@@ -2,8 +2,6 @@ import "dotenv/config";
 import path from "path";
 import express from "express";
 import cors from "cors";
-import connectToDatabase from "./config/db";
-import {NODE_ENV, PORT} from "./constants/env";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler";
 import authRoutes from "./routes/auth.routes";
@@ -13,7 +11,9 @@ import sessionRoutes from "./routes/session.route";
 import carRoutes from "./routes/car.routes";
 import paymentRoutes from "./routes/payment.routes";
 import bookingRoutes from "./routes/booking.routes";
+import connectToDatabase from "./config/db";
 import carSeeder from "./seeders/car.seeder";
+import {NODE_ENV} from "./constants/env";
 
 const app = express();
 
@@ -22,11 +22,11 @@ const needSeeding = false;
 app.use(express.json({limit: "25mb"}));
 app.use(express.urlencoded({extended: true, limit: "25mb"}));
 
-const allowedOrigins = [
-    "https://rocky-caverns-97508-c524e4758964.herokuapp.com/", // Replace with your actual  URL
-    "http://localhost:5173", // For local development
-    // Add other allowed origins as needed
-];
+// const allowedOrigins = [
+//     "https://ancient-cove-67501-f84c5b032c8a.herokuapp.com/", // Replace with your actual  URL
+//     "http://localhost:5173", // For local development
+//     // Add other allowed origins as needed
+// ];
 
 // app.use(
 //     cors({
@@ -44,10 +44,6 @@ const allowedOrigins = [
 app.use(cors());
 app.use(cookieParser());
 
-const port = process.env.PORT || 5000; // Use Heroku's PORT or 5000 locally
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
 
 app.get("/health", (req, res, next) => {
     return res.status(200).json({status: "healthy"});
@@ -65,15 +61,20 @@ app.use("/booking", authenticate, bookingRoutes);
 
 app.use(errorHandler);
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'dist')));
 
-// The "catchall" handler to send back index.html on all unmatched requests:
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+app.use(express.static(path.join(__dirname, "../frontend", "/dist")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
 });
 
-app.listen(PORT, async () => {
+
+const port = process.env.PORT || 4004; // Use Heroku's PORT or 5000 locally
+// app.listen(port, () => {
+//     console.log(`Server is running on port ${port}`);
+// });
+
+app.listen(port, async () => {
     try {
         await connectToDatabase();
         if (needSeeding) {

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import TimePicker from "react-time-picker";
 import DatePicker from "react-datepicker";
 import {SECURITY} from "../constants/svgPath";
-import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
@@ -11,6 +10,7 @@ import {useAuthStore} from "../store/authStore.ts";
 import NavbarAuth from "../components/sharedComponents/NavbarAuth.tsx";
 import NavbarNoAuth from "../components/sharedComponents/NavbarNoAuth.tsx";
 import Footer from "../components/sharedComponents/Footer.tsx";
+import API from "../config/apiClient.ts";
 
 interface IclientInfo {
     name: string;
@@ -49,6 +49,20 @@ const getUnaviableDates = (bookings: object[], type: string) => {
     return array
 }
 
+function getNumberOfDays(date1: string, date2: string) {
+    // Convert the date strings to Date objects.  Crucially important for accurate calculations!
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+
+    // Calculate the difference in milliseconds.
+    const diffInMs = Math.abs(d2.getTime() - d1.getTime());
+
+    // Convert milliseconds to days.  Using Math.ceil ensures we always return at least 1.
+    const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+    return diffInDays < 1 ? 1 : diffInDays;
+}
+
 const handleSubmit = async (
     e: React.FormEvent<HTMLButtonElement>,
     carId: string,
@@ -63,8 +77,10 @@ const handleSubmit = async (
         userId: userId,
     };
 
-    await axios.post(`http://localhost:4004/booking/${carId}`, bookingInfo);
+    // await axios.post(`http://localhost:4004/booking/${carId}`, bookingInfo);
+    await API.post(`/booking/${carId}`, bookingInfo);
 };
+
 
 const checkCompletion = (clientInfo: IclientInfo) => {
     let result: boolean = false;
@@ -101,12 +117,10 @@ const BookingForm = () => {
         setLoading(true);
 
         const fetchCarInfo = async () => {
-            await axios
-                .get(`http://localhost:4004/car/${id}`)
-                .then((response) => setCarInfo(response.data))
-                .catch((err) => {
-                    console.error(err);
-                });
+
+            await API.get(`/car/${id}`)
+                .then((response) => setCarInfo(response))
+                .catch((error) => console.log(error));
 
             setLoading(false);
         };
@@ -451,7 +465,8 @@ const BookingForm = () => {
                                             </p>
                                         </div>
                                         <p className="text-3xl font-bold">
-                                            ${`${carPriceString?.slice(0, carPriceString?.length - 2)}.${carPriceString?.slice(carPriceString?.length - 2, carPriceString?.length)}`}
+                                            {/*${`${carPriceString?.slice(0, carPriceString?.length - 2)}.${carPriceString?.slice(carPriceString?.length - 2, carPriceString?.length)}`}*/}
+                                            ${(getNumberOfDays(clientInfo?.dropoffDate, clientInfo?.pickupDate) * carInfo.price) / 100 + '.00'}
                                         </p>
                                     </div>
                                 </div>
